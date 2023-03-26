@@ -10,11 +10,13 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 
 const Upload = () => {
   const [file, setFile] = useState(null);
+  const navigate = useNavigate();
   const toast = useToast()
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -33,7 +35,8 @@ const Upload = () => {
     
     try {
       const result = await axios.post('http://localhost:5002/api/song/createSong', formData, config)
-      console.log(result)
+      console.log(result);
+      navigate('/dashboard');
 
     } catch(error) {
       toast({

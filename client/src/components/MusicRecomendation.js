@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Card,
   CardBody,
   CardHeader,
@@ -12,8 +13,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { currentSong } from "../features/musicSlice";
+import { setSongs } from "../features/musicSlice";
+import { FcLikePlaceholder } from "react-icons/fc";
+import { MdPlaylistAdd } from "react-icons/md";
+import "../Style/MR.css";
 
 const MusicRecomendation = ({ music }) => {
+  const MusicTrack = useSelector((state) => state.music.MusicTrack);
   const dispatch = useDispatch();
 
   const handleGetMusic = async (titleSong) => {
@@ -29,11 +35,13 @@ const MusicRecomendation = ({ music }) => {
       )
       .then((res) => {
         console.log(res);
-        //res.data is an object
-        dispatch(currentSong(res.data));
+        dispatch(setSongs(res.data));
       });
   };
 
+  useEffect(() => {
+    console.log(typeof MusicTrack);
+  }, []);
   return (
     <Grid
       templateColumns={{
@@ -59,18 +67,31 @@ const MusicRecomendation = ({ music }) => {
           backgroundColor="transparent"
         >
           <CardHeader>
-            <Image
-              src={song.Thumbnail}
-              placeholder="Thumbnail"
-              boxSize="200px"
-              borderRadius='15px'
-            />
+            <Box className="image-container">
+              <Image
+                src={song.Thumbnail}
+                placeholder="Thumbnail"
+                boxSize="200px"
+                borderRadius="15px"
+              />
+              <Box className="button-container">
+                <Button class="like-button">
+                  <FcLikePlaceholder />
+                </Button>
+                <Button class="add-to-playlist-button">
+                  <MdPlaylistAdd />
+                </Button>
+              </Box>
+            </Box>
           </CardHeader>
           <CardBody mt={-2}>
             <Text
               alignContent="center"
               style={{ overflow: "hidden", textOverflow: "ellipsis" }}
               textColor="#DFF6FF"
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
             >
               {song.titleSong}
             </Text>

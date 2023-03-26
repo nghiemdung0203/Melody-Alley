@@ -5,35 +5,35 @@ import Header from "../components/Header";
 import MusicRecomendation from "../components/MusicRecomendation";
 import { useSelector } from "react-redux";
 import MusicPlayer from "./MusicPlayer";
-import "../Style/MusicPage.css"
+import "../Style/MusicPage.css";
 
 const MusicPage = () => {
-    const [music, setMusic] = useState([]);
-    const currentTrack = useSelector((state) => state.music.CurrentTrack)
-    const fetchMusic = async () => {
+  const [music, setMusic] = useState([]);
+  const MusicTrack = useSelector((state) => state.music.MusicTrack);
+  const fetchMusic = async () => {
+    const res = await axios
+      .get("http://localhost:5002/api/song/songs")
+      .then((result) => {
+        setMusic(result.data);
+      });
+  };
 
-        const res = await axios.get("http://localhost:5002/api/song/songs").then((result) => {
-            setMusic(result.data)
-        });
-        
-    };
-
-    useEffect(() => {
-        fetchMusic();    
-    }, []);
-    return (
-        <Container maxW='100%' height='100vh' backgroundColor='#47B5FF'>
-            <Box maxW='6xl' >
-                <Header/>
-            </Box>
-            <Box mt={8} maxW='6xl'>
-                <MusicRecomendation music = {music}/>
-            </Box>
-            <Box id = "musicPlayer" >
-                {currentTrack ? <MusicPlayer/> : null }
-            </Box>
-        </Container>
-    );
-    };
+  useEffect(() => {
+    fetchMusic();
+  }, []);
+  return (
+    <Container maxW="100%" height="100vh" backgroundColor="#47B5FF">
+      <Box maxW="6xl">
+        <Header />
+      </Box>
+      <Box mt={8} maxW="6xl">
+        <MusicRecomendation music={music} />
+      </Box>
+      <Box id="musicPlayer">
+        {MusicTrack.length > 0 ? <MusicPlayer MusicTrack={MusicTrack} /> : null}
+      </Box>
+    </Container>
+  );
+};
 
 export default MusicPage;

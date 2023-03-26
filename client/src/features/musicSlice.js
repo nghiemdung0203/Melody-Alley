@@ -1,30 +1,38 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
 const initialState = {
-    MusicTrack: [],
-    CurrentTrack: null,
-    isPlaying: false,
-    volume: 50,
-};  
-
+  MusicTrack: [],
+  CurrentTrackIndex: null,
+  isPlaying: false,
+  volume: 50,
+};
 
 const musicSlice = createSlice({
-    name: 'music',
-    initialState,
-    reducers: {
-        setSongs:  (state, aciton) => {
-            state.MusicTrack = aciton.payload
-        },
-        currentSong: (state, aciton) => {
-            state.CurrentTrack = aciton.payload
-        },
-        PlayPause: (state, aciton) => {
-            state.isPlaying = !state.isPlaying
-        }
-    }
-})
+  name: "music",
+  initialState,
+  reducers: {
+    setSongs: (state, action) => {
+      state.MusicTrack.push(action.payload)
+      if (state.CurrentTrackIndex === null) {
+        state.CurrentTrackIndex = 0;
+      } else {
+        state.CurrentTrackIndex += 1;
+      }
+    },
+    PlayPause: (state) => {
+      state.isPlaying = !state.isPlaying;
+    },
+    NextSong: (state) => {
+      state.CurrentTrackIndex += 1;
+      state.isPlaying = true;
+    },
+    PreviousSong: (state) => {
+      state.CurrentTrackIndex -= 1;
+      state.isPlaying = true;
+    },
+  },
+});
 
-
-export const {setSongs, currentSong, PlayPause} = musicSlice.actions;
-export default musicSlice.reducer
+export const { setSongs, currentSong, PlayPause, NextSong, PreviousSong } =
+  musicSlice.actions;
+export default musicSlice.reducer;
