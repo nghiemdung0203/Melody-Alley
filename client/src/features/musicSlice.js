@@ -30,9 +30,12 @@ const musicSlice = createSlice({
       state.CurrentTrackIndex -= 1;
       state.isPlaying = true;
     },
+    AdjustVolume: (state, action) => {
+      state.volume = action.payload;
+    }
   },
 });
 
-export const { setSongs, currentSong, PlayPause, NextSong, PreviousSong } =
+export const { setSongs, currentSong, PlayPause, NextSong, PreviousSong, AdjustVolume} =
   musicSlice.actions;
 export default musicSlice.reducer;

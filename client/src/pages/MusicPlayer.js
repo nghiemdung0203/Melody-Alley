@@ -7,6 +7,7 @@ import {
   SliderTrack,
   SliderFilledTrack,
   SliderThumb,
+  VStack,
 } from "@chakra-ui/react";
 import { useSelector, useDispatch } from "react-redux";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
@@ -15,7 +16,12 @@ import { FaRandom } from "react-icons/fa";
 import { RxLoop } from "react-icons/rx";
 import { MdGraphicEq } from "react-icons/md";
 import { BsVolumeDownFill } from "react-icons/bs";
-import { PlayPause, PreviousSong, NextSong } from "../features/musicSlice";
+import {
+  PlayPause,
+  PreviousSong,
+  NextSong,
+  AdjustVolume,
+} from "../features/musicSlice";
 
 const MusicPlayer = ({ MusicTrack }) => {
   const currentTrackIndex = useSelector(
@@ -26,6 +32,8 @@ const MusicPlayer = ({ MusicTrack }) => {
   const dispatch = useDispatch();
 
   const [sliderValue, setSliderValue] = useState(0);
+  const [volume, setVolume] = useState(30);
+  const [displayVolume, setDisplayVolume] = useState(false);
   const audioRef = useRef();
 
   const handleTimeUpdate = () => {
@@ -62,10 +70,20 @@ const MusicPlayer = ({ MusicTrack }) => {
 
   const gotoPrevious = () => {
     if (currentTrackIndex === 0) {
-      audioRef.current.currentTime = 0
+      audioRef.current.currentTime = 0;
     } else {
       dispatch(PreviousSong());
     }
+  };
+
+  const displayVolumne = () => {
+    setDisplayVolume(!displayVolume);
+  };
+
+  const handleVolumeChange = (newValue) => {
+    const currentVolume = audioRef.current.volume;
+    audioRef.current.volume = newValue / 100;
+    setVolume(newValue)
   };
 
   return (
@@ -123,13 +141,30 @@ const MusicPlayer = ({ MusicTrack }) => {
           backgroundColor="transparent"
           borderRadius="60%"
           _hover={{ bgColor: "none" }}
+          onClick={displayVolumne}
         >
-          <BsVolumeDownFill color="#DFF6FF" size={20} />
+          <VStack position="absolute" bottom="10px">
+            {displayVolume ? (
+              <Slider
+                aria-label="slider-ex-3"
+                orientation="vertical"
+                minH="32"
+                value={volume}
+                onChange={handleVolumeChange}
+              >
+                <SliderTrack>
+                  <SliderFilledTrack />
+                </SliderTrack>
+                <SliderThumb />
+              </Slider>
+            ) : null}
+            <BsVolumeDownFill color="#DFF6FF" size={20} />
+          </VStack>
         </Button>
       </Box>
       <Box id="audio">
         <audio
-          src={MusicTrack[currentTrackIndex].secure_url}
+          src={MusicTrack[currentTrackIndex].URL}
           ref={audioRef}
           onTimeUpdate={handleTimeUpdate}
           autoPlay
@@ -150,9 +185,16 @@ const MusicPlayer = ({ MusicTrack }) => {
           </SliderThumb>
         </Slider>
       </Box>
-      <Box id="inform" padding="5px 8px 0" width='200px' marginLeft="10px">
-        <Text color={"#DFF6FF"} overflow= "hidden" whiteSpace= "nowrap" textOverflow= "ellipsis">{MusicTrack[currentTrackIndex].public_id}</Text>
-      </Box> 
+      <Box id="inform" padding="5px 8px 0" width="200px" marginLeft="10px">
+        <Text
+          color={"#DFF6FF"}
+          overflow="hidden"
+          whiteSpace="nowrap"
+          textOverflow="ellipsis"
+        >
+          {MusicTrack[currentTrackIndex].titleSong}
+        </Text>
+      </Box>
       <Box id="volumn"></Box>
     </Box>
   );

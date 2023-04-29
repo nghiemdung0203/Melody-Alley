@@ -23,10 +23,10 @@ const MusicPage = () => {
   }, []);
   return (
     <Container maxW="100%" height="100vh" backgroundColor="#47B5FF">
-      <Box maxW="6xl">
+      <Box>
         <Header />
       </Box>
-      <Box mt={8} maxW="6xl">
+      <Box mt={8}>
         <MusicRecomendation music={music} />
       </Box>
       <Box id="musicPlayer">
