@@ -4,6 +4,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Flex,
   Grid,
   HStack,
   Image,
@@ -22,12 +23,13 @@ const MusicRecomendation = ({ music }) => {
   const MusicTrack = useSelector((state) => state.music.MusicTrack);
   const dispatch = useDispatch();
 
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
   const handleGetMusic = async (titleSong) => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
     await axios
       .get(
         `http://localhost:5002/api/song/SpecSong?titleSong=${titleSong}`,
@@ -39,71 +41,95 @@ const MusicRecomendation = ({ music }) => {
       });
   };
 
-  const likeSong = () => {
+  const likeSong = async (song_id) => {
+    const User = localStorage.getItem("user");
+    const User_id = JSON.parse(User).id;
 
-  }
-
-  useEffect(() => {
-    console.log(typeof MusicTrack);
-  }, []);
+    await axios
+      .post(
+        "http://localhost:5002/api/LikedSong/LikedSong",
+        {
+          'UserID': User_id,
+          'SongID': song_id,
+        }, config
+      )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
   return (
-    <Box maxW='inherit'>
-      <Grid
-        templateColumns={{
-          base: "repeat(1, 1fr)",
-          md: "repeat(2, 1fr)",
-          lg: "repeat(4, 1fr)",
-          xl: "repeat(6, 1fr)",
-        }}
-        gap="10px"
-        borderRadius="20px"
-        bgColor="#06283D"
-        width="100%"
-      >
-        {music.map((song) => (
-          <Card
-            key={song._id}
-            width="200px"
-            margin="10px"
-            height={{ base: "400px", md: "300px" }}
-            display="flex"
-            justifyContent="center"
-            onClick={() => handleGetMusic(song.titleSong)}
-            backgroundColor="transparent"
-          >
-            <CardHeader>
-              <Box className="image-container">
-                <Image
-                  src={song.Thumbnail}
-                  placeholder="Thumbnail"
-                  boxSize="200px"
-                  borderRadius="15px"
-                />
-                <Box className="button-container">
-                  <Button class="like-button">
-                    <FcLikePlaceholder />
-                  </Button>
-                  <Button class="add-to-playlist-button">
-                    <MdPlaylistAdd />
-                  </Button>
-                </Box>
-              </Box>
-            </CardHeader>
-            <CardBody mt={-2}>
-              <Text
-                alignContent="center"
-                style={{ overflow: "hidden", textOverflow: "ellipsis" }}
-                textColor="#DFF6FF"
-                whiteSpace="nowrap"
-                overflow="hidden"
-                textOverflow="ellipsis"
-              >
-                {song.titleSong}
-              </Text>
-            </CardBody>
-          </Card>
-        ))}
-      </Grid>
+    <Box maxW="60%">
+      <Box>
+        <Text
+          fontSize={"2xl"}
+          marginBottom={"5px"}
+          marginLeft={"13px"}
+          fontFamily={"sans-serif"}
+        >
+          You've uploaded
+        </Text>
+        <Grid
+          templateColumns={{
+            base: "repeat(1, 1fr)",
+            md: "repeat(2, 1fr)",
+            lg: "repeat(4, 1fr)",
+          }}
+          gap="10px"
+          width="100%"
+        >
+          {music.map((song) => (
+            <Card
+              key={song._id}
+              width="200px"
+              margin="10px"
+              height={{ base: "200px", md: "250px" }}
+              display="flex"
+              justifyContent="center"
+              backgroundColor="transparent"
+            >
+              <CardHeader>
+                <Flex
+                  className="image-container"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Image
+                    src={song.Thumbnail}
+                    placeholder="Thumbnail"
+                    boxSize="150px"
+                    borderRadius="15px"
+                  />
+                  <Flex className="button-container">
+                    <Button
+                      className="like-button"
+                      onClick={() => {
+                        likeSong(song._id);
+                      }}
+                    >
+                      <FcLikePlaceholder />
+                    </Button>
+                    <Button className="add-to-playlist-button">
+                      <MdPlaylistAdd />
+                    </Button>
+                  </Flex>
+                </Flex>
+              </CardHeader>
+              <CardBody mt={-2} onClick={() => handleGetMusic(song.titleSong)}>
+                <Text
+                  alignContent="center"
+                  style={{ overflow: "hidden", textOverflow: "ellipsis" }}
+                  textColor="#1B9C85"
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                  cursor={"pointer"}
+                >
+                  {song.titleSong}
+                </Text>
+              </CardBody>
+            </Card>
+          ))}
+        </Grid>
+      </Box>
     </Box>
   );
 };

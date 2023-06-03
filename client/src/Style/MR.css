@@ -6,17 +6,20 @@
   .button-container {
     position: absolute;
     bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    left: 4px;
+    right: 4px;
+    justify-content: center;
     padding: 10px;
-    text-align: center;
     transition: all 0.3s ease-in-out;
     opacity: 0;
   }
   
   .image-container:hover .button-container {
     opacity: 1;
+  }
+  
+  .image-container:hover .button-container button {
+    background-color: transparent;
   }
   
   .button-container button {

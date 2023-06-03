@@ -25,7 +25,7 @@ const Header = () => {
           _hover={{ opacity: "0.2" }}
           leftIcon={<BiHomeCircle />}
         >
-          Home
+        <NavLink to='/dashboard'>Home</NavLink>
         </Button>
         <Button
           bgColor="transparent"
@@ -34,7 +34,7 @@ const Header = () => {
           _hover={{ opacity: "0.2" }}
           leftIcon={<BiLibrary />}
         >
-          Library
+          <NavLink to='/library'>Library</NavLink>
         </Button>
         <Button
           bgColor="transparent"
