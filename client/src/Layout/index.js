@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import Header from "./Header";
 import "../Style/MusicPage.css";
-import MusicPlayer from "../pages/MusicPlayer";
+import MusicPlayer from "../Layout/MusicPlayer";
 import { Box } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 

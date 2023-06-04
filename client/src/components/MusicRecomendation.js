@@ -20,7 +20,6 @@ import { MdPlaylistAdd } from "react-icons/md";
 import "../Style/MR.css";
 
 const MusicRecomendation = ({ music }) => {
-  const MusicTrack = useSelector((state) => state.music.MusicTrack);
   const dispatch = useDispatch();
 
   const config = {

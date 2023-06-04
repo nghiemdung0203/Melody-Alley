@@ -52,11 +52,11 @@ const MusicPlayer = ({ MusicTrack }) => {
 
   const PlayAndPause = () => {
     if (isPlaying) {
-      dispatch(PlayPause(isPlaying));
-      audioRef.current.play();
-    } else {
-      dispatch(PlayPause(isPlaying));
       audioRef.current.pause();
+      dispatch(PlayPause(isPlaying));
+    } else {
+      audioRef.current.play();
+      dispatch(PlayPause(isPlaying));
     }
   };
 
@@ -83,7 +83,7 @@ const MusicPlayer = ({ MusicTrack }) => {
   const handleVolumeChange = (newValue) => {
     const currentVolume = audioRef.current.volume;
     audioRef.current.volume = newValue / 100;
-    setVolume(newValue)
+    setVolume(newValue);
   };
 
   return (
@@ -110,9 +110,9 @@ const MusicPlayer = ({ MusicTrack }) => {
           onClick={PlayAndPause}
         >
           {isPlaying ? (
-            <HiPlay color="#DFF6FF" size={20} />
-          ) : (
             <HiPause color="#DFF6FF" size={20} />
+          ) : (
+            <HiPlay color="#DFF6FF" size={20} />
           )}
         </Button>
         <Button

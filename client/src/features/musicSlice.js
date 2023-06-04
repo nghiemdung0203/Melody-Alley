@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   MusicTrack: [],
   CurrentTrackIndex: null,
-  isPlaying: false,
+  isPlaying: true,
   volume: 50,
 };
 
@@ -18,6 +18,7 @@ const musicSlice = createSlice({
       } else {
         state.CurrentTrackIndex += 1;
       }
+      state.isPlaying = true;
     },
     PlayPause: (state) => {
       state.isPlaying = !state.isPlaying;
