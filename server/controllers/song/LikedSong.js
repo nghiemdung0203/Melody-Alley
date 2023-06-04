@@ -45,3 +45,15 @@ module.exports.getLikedSong = async (req, res) => {
     }
   });
 };
+
+
+module.exports.disLikedSong = async(req, res) => {
+  const { UserID, SongID } = req.body;
+
+  const RemoveLikedSong = await UserLikeSong.findOneAndRemove({
+    UserID: mongoose.Types.ObjectId(UserID),
+    SongID: mongoose.Types.ObjectId(SongID)
+  })
+
+  console.log(RemoveLikedSong);
+}
