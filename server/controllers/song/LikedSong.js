@@ -3,30 +3,32 @@ const UserLikeSong = require("../../models/UserLikeSong");
 const Song = require("../../models/Songs");
 const Songs = require("../../models/Songs");
 
-module.exports.LikedSong = (req, res) => {
+module.exports.LikedSong = async(req, res) => {
   const { UserID, SongID } = req.body;
   const Now = new Date();
 
-  const UserLikedSong = UserLikeSong.findOne({
-    UserID: mongoose.Types.ObjectId(UserID),
-    SongID: mongoose.Types.ObjectId(SongID),
-  });
+    const UserLikedSong = await UserLikeSong.findOne({
+      UserID: mongoose.Types.ObjectId(UserID),
+      SongID: mongoose.Types.ObjectId(SongID),
+    });
 
-  if (UserLikedSong !== null) {
-    res.status(400).send("User Liked this song before");
-  } else {
-    try {
-      const LikedSong = new UserLikeSong({
-        UserID: UserID,
-        SongID: SongID,
-        CreateAt: Now,
-      });
-      LikedSong.save();
-      res.status(200).send(LikedSong);
-    } catch (err) {
-      res.status(500).send(err.message);
+    if (UserLikedSong !== null) {
+      res.status(200).send({msg: `User liked this song before`})
+    } else {
+      try {
+        const LikedSong = new UserLikeSong({
+          UserID: UserID,
+          SongID: SongID,
+          CreateAt: Now,
+        });
+        await LikedSong.save();
+        res.status(200).send(LikedSong);
+      } catch (err) {
+        res.status(500).send(err.message);
+      }
     }
-  }
+
+    
 };
 
 module.exports.getLikedSong = async (req, res) => {
@@ -55,5 +57,5 @@ module.exports.disLikedSong = async(req, res) => {
     SongID: mongoose.Types.ObjectId(SongID)
   })
 
-  console.log(RemoveLikedSong);
+  res.status(200).send(RemoveLikedSong)
 }

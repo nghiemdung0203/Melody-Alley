@@ -42,16 +42,16 @@ const Library = () => {
 
   useEffect(() => {
     fetchLikedSong(); 
-  }, [User_id]);
+  }, [User_id, MusicLikedTrack]);
 
   //huy like song
-  const likeSong = async (song_id) => {
+  const disLikedsong = async (song_id) => {
     const User = localStorage.getItem("user");
     const User_id = JSON.parse(User).id;
 
     await axios
       .post(
-        "http://localhost:5002/api/LikedSong/LikedSong",
+        "http://localhost:5002/api/LikedSong/disLikeSong",
         {
           'UserID': User_id,
           'SongID': song_id,
@@ -61,7 +61,7 @@ const Library = () => {
       .catch((err) => console.log(err));
   };
 
-  const handleGetMusic = async (titleSong) => { // bật bài hát
+  const handleLikeMusic = async (titleSong) => { // bật bài hát
     await axios
       .get(
         `http://localhost:5002/api/song/SpecSong?titleSong=${titleSong}`,
@@ -142,7 +142,7 @@ const Library = () => {
                     <Button
                       className="like-button"
                       onClick={() => {
-                        likeSong(song._id);
+                        disLikedsong(song._id);
                       }}
                     >
                       <FcLikePlaceholder />
@@ -153,7 +153,7 @@ const Library = () => {
                   </Flex>
                 </Flex>
               </CardHeader>
-              <CardBody mt={-2} onClick={() => handleGetMusic(song.titleSong)}>
+              <CardBody mt={-2} onClick={() => handleLikeMusic(song.titleSong)}>
                 <Text
                   alignContent="center"
                   style={{ overflow: "hidden", textOverflow: "ellipsis" }}
