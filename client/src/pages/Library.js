@@ -6,12 +6,14 @@ import {fetchLikedTrack} from '../features/LikedSong';
 import { useDispatch, useSelector } from "react-redux";
 import { setSongs } from "../features/musicSlice";
 import { FcLikePlaceholder } from "react-icons/fc";
+import { useNavigate } from "react-router-dom";
 
 const User = localStorage.getItem("user");
 const User_id = JSON.parse(User).id;
 
 const Library = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const MusicLikedTrack = useSelector((state) => state.LikedSong.MusicLikedTrack);
 
@@ -72,6 +74,10 @@ const Library = () => {
         dispatch(setSongs(res.data)); // cần sửa để set song các bài hát được được like
       });
   };
+
+  const handleToSongPage = () => {
+    navigate('/Song');
+  }
   return (
     <Flex
       maxW={{ base: "50%", md: "60%", lg: "70%" }}
@@ -125,6 +131,7 @@ const Library = () => {
               display="flex"
               justifyContent="center"
               backgroundColor="transparent"
+              onClick={handleToSongPage}
             >
               <CardHeader>
                 <Flex

@@ -6,46 +6,55 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Select,
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
-
 const Upload = () => {
   const [file, setFile] = useState(null);
+  const [genre, setGenre] = useState("");
   const navigate = useNavigate();
-  const toast = useToast()
+  const toast = useToast();
+
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
 
-  const handleSubmit = async(event) => {
+  const handleGenreChange = (event) => {
+    setGenre(event.target.value)
+  }
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
-    console.log(file)
-    formData.append("song", file)
+    formData.append("song", file);
+    formData.append("genre", genre);
+
     const config = {
       headers: {
-        "content-type": "multipart/form-data"
-      }
-    }
-    
-    try {
-      const result = await axios.post('http://localhost:5002/api/song/createSong', formData, config)
-      console.log(result);
-      navigate('/dashboard');
+        "content-type": "multipart/form-data",
+      },
+    };
 
-    } catch(error) {
+    try {
+      const result = await axios.post(
+        "http://localhost:5002/api/song/createSong",
+        formData,
+        config
+      );
+      console.log(result);
+      navigate("/dashboard");
+    } catch (error) {
       toast({
         status: "error",
         description: error.message,
         duration: 3000,
         position: "bottom",
-        isClosable: true
-      })
+        isClosable: true,
+      });
     }
   };
 
@@ -65,13 +74,13 @@ const Upload = () => {
         width="50%"
         height="50%"
       >
-        <form onSubmit={handleSubmit} encType='multipart/form-data'>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
           <FormControl>
             <FormLabel
               htmlFor="mp3file"
               fontSize="3xl"
               fontWeight="medium"
-              margin="10px"
+              margin="5px"
               position="relative"
               left="10px"
             >
@@ -83,9 +92,30 @@ const Upload = () => {
               name="mp3file"
               onChange={handleFileChange}
               padding="5px"
-              margin="20px"
+              margin="10px"
               accept="audio/*"
             />
+          </FormControl>
+          <FormControl>
+            <FormLabel
+              fontSize="3xl"
+              fontWeight="medium"
+              margin="5px"
+              position="relative"
+              left="10px"
+            >
+              Select Genre:
+            </FormLabel>
+            <Select padding="5px" margin="10px" value={genre} onChange={handleGenreChange}>
+              <option>POP</option>
+              <option>ROCK</option>
+              <option>JAZZ</option>
+              <option>CLASSICAL</option>
+              <option>HIP HOP</option>
+              <option>EDM</option>
+              <option>COUNTRY</option>
+              <option>FOLK</option>
+            </Select>
           </FormControl>
           <Button
             type="submit"

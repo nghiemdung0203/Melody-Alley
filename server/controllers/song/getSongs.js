@@ -36,6 +36,9 @@ module.exports.createSong = async (req, res) => {
   const mp3Path = req.file.path;
   const now = new Date();
 
+  console.log(req.body.genre)
+  
+
   //adjust the font of the originalname
   const originalnameBuffer = Buffer.from(req.file.originalname, "binary");
   const originalname = iconv.decode(originalnameBuffer, "utf-8");
@@ -83,7 +86,7 @@ module.exports.createSong = async (req, res) => {
                   Thumbnail: result.secure_url,
                   URL: mp3Upload.secure_url,
                   AuthorID: req.body.AuthorID || null,
-                  GenreID: req.body.GenreID || null,
+                  GenreID: req.body.genre || null,
                   CreateAt: now,
                 });
                 newSong.save((err, savedSong) => {

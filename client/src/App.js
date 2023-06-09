@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import Upload from "./pages/Upload";
 import Layout from "./Layout";
 import Library from "./pages/Library";
+import SongPage from "./pages/SongPage";
 
 function App() {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ function App() {
           <Route exact path="/dashboard" element={<MusicPage />} />
           <Route exact path="/upload" element={<Upload />} />
           <Route exact path="/library" element={<Library />} />
+          <Route exact path="/Song/:title" element={<SongPage />} />
         </Routes>
       </Layout>
     </div>

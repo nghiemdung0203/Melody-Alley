@@ -6,7 +6,7 @@ const songSchema = new mongoose.Schema({
   Thumbnail: { type: "String", default: "" },
   AuthorID: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: "unknown" },
   PlayCount: { type: "Number", default: 0},
-  GenreID: { type: mongoose.Schema.Types.ObjectId, ref: 'Genre', default: "unknown" },
+  GenreID: { type: "String", default: "unknown" },
   CreateAt: { type: "Date", required: true },
   UpdateAt: { type: "Date" },
 });

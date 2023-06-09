@@ -18,9 +18,11 @@ import { setSongs } from "../features/musicSlice";
 import { FcLikePlaceholder } from "react-icons/fc";
 import { MdPlaylistAdd } from "react-icons/md";
 import "../Style/MR.css";
+import { useNavigate } from "react-router-dom";
 
 const MusicRecomendation = ({ music }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const config = {
     headers: {
@@ -55,6 +57,10 @@ const MusicRecomendation = ({ music }) => {
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   };
+
+  const handleToSongPage = (titleSong) => {
+    navigate(`/Song/${encodeURIComponent(titleSong)}`);
+  }
   return (
     <Box maxW="60%">
       <Box>
@@ -84,6 +90,7 @@ const MusicRecomendation = ({ music }) => {
               display="flex"
               justifyContent="center"
               backgroundColor="transparent"
+              onClick={() => handleToSongPage(song.titleSong)}
             >
               <CardHeader>
                 <Flex
