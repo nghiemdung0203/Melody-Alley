@@ -1,68 +1,60 @@
 //@ts-check
-import { Box, Button, HStack } from "@chakra-ui/react";
+import { Box, Button, HStack, Image, Text } from "@chakra-ui/react";
 import React from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
 import { BiLibrary, BiHomeCircle } from "react-icons/bi";
 import { NavLink } from "react-router-dom";
-
+import '../Style/Header.css'
 const Header = () => {
   return (
-    <Box width="100%">
+    <Box
+      width="100%"
+      display={"flex"}
+      justifyContent={"space-around"}
+      backgroundColor={"Transparent"}
+      margin={"10px"}
+      position={"relative"}
+      right={"1%"}
+    >
       <HStack
         gap="0px"
-        width="inherit"
-        bgColor="#06283D"
+        maxWidth={"100%"}
         display="flex"
         justifyContent="center"
         alignItems="center"
-        borderRadius="20px"
+        position={"relative"}
+        className="header-container"
       >
-        <Button
-          bgColor="transparent"
-          color="#DFF6FF"
-          size="lg"
-          _hover={{ opacity: "0.2" }}
-          leftIcon={<BiHomeCircle />}
-        >
-        <NavLink to='/dashboard'>Home</NavLink>
+        <Button leftIcon={<BiHomeCircle />}>
+          <NavLink to="/dashboard">Home</NavLink>
         </Button>
-        <Button
-          bgColor="transparent"
-          color="#DFF6FF"
-          size="lg"
-          _hover={{ opacity: "0.2" }}
-          leftIcon={<BiLibrary />}
-        >
-          <NavLink to='/library'>Library</NavLink>
+        <Button leftIcon={<BiLibrary />}>
+          <NavLink to="/library">Library</NavLink>
         </Button>
-        <Button
-          bgColor="transparent"
-          color="#DFF6FF"
-          size="lg"
-          _hover={{ opacity: "0.2" }}
-        >
-          Icon
-        </Button>
-        <Button
-          bgColor="transparent"
-          color="#DFF6FF"
-          size="lg"
-          _hover={{ opacity: "0.2" }}
-          leftIcon={<AiOutlineCloudUpload />}
-        >
+        <Button>Icon</Button>
+        <Button leftIcon={<AiOutlineCloudUpload />}>
           <NavLink to="/upload">Upload</NavLink>
         </Button>
-        <Button
-          bgColor="transparent"
-          color="#DFF6FF"
-          size="lg"
-          _hover={{ opacity: "0.2" }}
-          leftIcon={<CgProfile />}
-        >
-          Profile
-        </Button>
+        <Button leftIcon={<CgProfile />}>Profile</Button>
+        <Box className="animation start-home"></Box>
       </HStack>
+      <Box
+        display={"flex"}
+        flexDirection={"row"}
+        justifyContent={"center"}
+        alignItems={"center"}
+      >
+        <Image
+          src="https://via.placeholder.com/50"
+          borderRadius="full"
+          boxSize="50px"
+          margin={"5px 10px"}
+        />
+        <Text fontSize={"2xl"} fontFamily={"sans-serif"}>
+          Nghieem quoc Dung
+        </Text>
+      </Box>
     </Box>
   );
 };

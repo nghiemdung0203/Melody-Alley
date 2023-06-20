@@ -24,8 +24,8 @@ const Upload = () => {
   };
 
   const handleGenreChange = (event) => {
-    setGenre(event.target.value)
-  }
+    setGenre(event.target.value);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -60,75 +60,76 @@ const Upload = () => {
 
   return (
     <Box
-      width="100vw"
-      height="100vh"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Flex
-        justifyContent="center"
-        alignItems="center"
-        border="1px solid black"
-        borderRadius="10px"
-        width="50%"
-        height="50%"
+  width="100vw"
+  height="100vh"
+  display="flex"
+  justifyContent="center"
+  alignItems="center"
+>
+  <Flex
+    justifyContent="center"
+    alignItems="center"
+    border="1px solid black"
+    borderRadius="10px"
+    width={["90%", "70%", "50%"]} // Adjust the width based on screen size
+    height={["70%", "60%", "50%"]} // Adjust the height based on screen size
+  >
+    <form onSubmit={handleSubmit} encType="multipart/form-data">
+      <FormControl>
+        <FormLabel
+          htmlFor="mp3file"
+          fontSize={["xl", "2xl", "3xl"]} // Adjust the font size based on screen size
+          fontWeight="medium"
+          margin="5px"
+          position="relative"
+          left="10px"
+        >
+          Select an mp3 file:
+        </FormLabel>
+        <Input
+          type="file"
+          id="mp3file"
+          name="mp3file"
+          onChange={handleFileChange}
+          padding="5px"
+          margin="10px"
+          accept="audio/mp3"
+        />
+      </FormControl>
+      <FormControl>
+        <FormLabel
+          fontSize={["xl", "2xl", "3xl"]} // Adjust the font size based on screen size
+          fontWeight="medium"
+          margin="5px"
+          position="relative"
+          left="10px"
+        >
+          Select Genre:
+        </FormLabel>
+        <Select padding="5px" margin="10px" value={genre} onChange={handleGenreChange}>
+          <option>POP</option>
+          <option>ROCK</option>
+          <option>JAZZ</option>
+          <option>CLASSICAL</option>
+          <option>HIP HOP</option>
+          <option>EDM</option>
+          <option>COUNTRY</option>
+          <option>FOLK</option>
+        </Select>
+      </FormControl>
+      <Button
+        type="submit"
+        position="relative"
+        left="20px"
+        width={["80%", "70%", "400px"]} // Adjust the width based on screen size
+        colorScheme="orange"
       >
-        <form onSubmit={handleSubmit} encType="multipart/form-data">
-          <FormControl>
-            <FormLabel
-              htmlFor="mp3file"
-              fontSize="3xl"
-              fontWeight="medium"
-              margin="5px"
-              position="relative"
-              left="10px"
-            >
-              Select an mp3 file:
-            </FormLabel>
-            <Input
-              type="file"
-              id="mp3file"
-              name="mp3file"
-              onChange={handleFileChange}
-              padding="5px"
-              margin="10px"
-              accept="audio/*"
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel
-              fontSize="3xl"
-              fontWeight="medium"
-              margin="5px"
-              position="relative"
-              left="10px"
-            >
-              Select Genre:
-            </FormLabel>
-            <Select padding="5px" margin="10px" value={genre} onChange={handleGenreChange}>
-              <option>POP</option>
-              <option>ROCK</option>
-              <option>JAZZ</option>
-              <option>CLASSICAL</option>
-              <option>HIP HOP</option>
-              <option>EDM</option>
-              <option>COUNTRY</option>
-              <option>FOLK</option>
-            </Select>
-          </FormControl>
-          <Button
-            type="submit"
-            position="relative"
-            left="20px"
-            width="400px"
-            colorScheme="orange"
-          >
-            Upload
-          </Button>
-        </form>
-      </Flex>
-    </Box>
+        Upload
+      </Button>
+    </form>
+  </Flex>
+</Box>
+
   );
 };
 

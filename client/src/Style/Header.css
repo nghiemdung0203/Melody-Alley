@@ -1,0 +1,108 @@
+.header-container button{
+    font-size: 15px;
+    display: inline;
+    position: relative;
+    z-index: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    left: 1.1%;
+    border: none;
+    background-color: transparent;
+}
+
+.header-container .animation{
+    position: absolute;
+    left: 0;
+    height: 100%;
+    max-width: 130px;
+    top: 0;
+    z-index: 0;
+    transition: all 2s ease 0s;
+    border-radius: 8px;
+}
+
+button:nth-child(1) {
+    width: 130px;
+}
+
+button:nth-child(2) {
+    width: 130px;
+}
+
+button:nth-child(3) {
+    width: 130px;
+}
+
+button:nth-child(4) {
+    width: 130px;
+}
+
+button:nth-child(5) {
+    width: 130px;
+}
+
+button:nth-child(1):hover{
+    border: none;
+    background-color: transparent;
+}
+
+button:nth-child(2):hover{
+    border: none;
+    background-color: transparent;
+}
+
+button:nth-child(3):hover{
+    border: none;
+    background-color: transparent;
+}
+
+button:nth-child(4):hover{
+    border: none;
+    background-color: transparent;
+}
+
+button:nth-child(5):hover{
+    border: none;
+    background-color: transparent;
+}
+
+
+.header-container .start-home, button:nth-child(1):hover~.animation {
+    width: 130px;
+    left: 0;
+    background-color: #1abc9c;
+    border: none;
+}
+
+.header-container .start-home, button:nth-child(2):hover~.animation {
+    width: 130px;
+    left: 137px;
+    background-color: #e74c3c;
+    border: none;
+
+}
+
+.header-container .start-home, button:nth-child(3):hover~.animation {
+    width: 130px;
+    left: 276px;
+    background-color: #3498db;
+    border: none;
+}
+
+.header-container .start-home, button:nth-child(4):hover~.animation {
+    width: 130px;
+    left: 413px;
+    background-color: #9b59b6;
+    border: none;
+    
+}
+
+.header-container .start-home, button:nth-child(5):hover~.animation {
+    width: 130px;
+    left: 552px;
+    background-color: #e67e22;
+    border: none;
+    
+}

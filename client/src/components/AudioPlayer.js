@@ -21,7 +21,6 @@ const AudioPlayer = ({ title }) => {
           config
         );
         setSong(response.data);
-        console.log(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -29,42 +28,69 @@ const AudioPlayer = ({ title }) => {
     fetchSong();
   }, [title]);
 
+
+  const likeSong = async (song_id) => { // like bài hàt
+    const User = localStorage.getItem("user");
+    const User_id = JSON.parse(User).id;
+
+    await axios
+      .post(
+        "http://localhost:5002/api/LikedSong/LikedSong",
+        {
+          'UserID': User_id,
+          'SongID': song_id,
+        }, config
+      )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
   return (
-    <Flex id="player" margin={"4"}>
-      <Box id="thumbnail" display={"inline"}>
-        <Image
-          src={Song.Thumbnail}
-          boxSize={300}
-          placeholder="Song's Thumbnail"
-          objectFit="cover"
-          borderRadius={'20px'}
-        />
-      </Box>
+    <Flex id="player" margin={4}>
+      {Song && (
+        <Box id="thumbnail" display="inline">
+          <Image
+            src={Song.Thumbnail}
+            boxSize={300}
+            placeholder="Song's Thumbnail"
+            objectFit="cover"
+            borderRadius="20px"
+          />
+        </Box>
+      )}
       <Box id="tag-info" marginLeft={4}>
-        <Text
-          fontSize={"3xl"}
-          fontFamily={"sans-serif"}
-          whiteSpace={"nowrap"}
-          color={"#1B9C85"}
-        >
-          {Song.titleSong}
-        </Text>
+        {Song && (
+          <Text
+            fontSize="3xl"
+            fontFamily="sans-serif"
+            whiteSpace="nowrap"
+            color="#1B9C85"
+          >
+            {Song.titleSong}
+          </Text>
+        )}
         <Box>
           <Button
             leftIcon={<BsFillPlayFill />}
-            borderRadius={"25px"}
-            backgroundColor={"#87CBB9"}
-            margin={"2.5"}
-            width={"110px"}
-            height={"45px"}
+            borderRadius="25px"
+            backgroundColor="#87CBB9"
+            margin={2.5}
+            width="110px"
+            height="45px"
           >
-            <Text fontSize={"2md"} fontFamily={"sans-serif"}>
+            <Text fontSize="2md" fontFamily="sans-serif">
               Play
             </Text>
           </Button>
-          <Button borderRadius={"100px"} backgroundColor={"#05BFDB"}>
-            <AiOutlineHeart />
-          </Button>
+          {Song && (
+            <Button
+              borderRadius="100px"
+              backgroundColor="#05BFDB"
+              onClick={() => likeSong(Song._id)}
+            >
+              <AiOutlineHeart />
+            </Button>
+          )}
         </Box>
       </Box>
     </Flex>
