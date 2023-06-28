@@ -8,6 +8,7 @@ require("dotenv").config();
 const authRoutes = require('./routes/authRoutes')
 const songRoutes = require('./routes/songRoutes')
 const likedSongRoutes = require('./routes/LikedSongRoutes')
+const commentRoutes = require('./routes/commentRoutes')
 
 const PORT = process.env.PORT || process.env.API_PORT
 
@@ -20,6 +21,7 @@ app.use(cors())
 app.use('/api/auth', authRoutes)
 app.use('/api/song', songRoutes);
 app.use('/api/LikedSong', likedSongRoutes)
+app.use('/api/comment', commentRoutes)
 
 const server = http.createServer(app);
 

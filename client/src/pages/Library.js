@@ -63,10 +63,10 @@ const Library = () => {
       .catch((err) => console.log(err));
   };
 
-  const handleLikeMusic = async (titleSong) => { // bật bài hát
+  const handleGetMusic = async (song_id) => { // bật bài hát
     await axios
       .get(
-        `http://localhost:5002/api/song/SpecSong?titleSong=${titleSong}`,
+        `http://localhost:5002/api/song/SpecSong?SongId=${song_id}`,
         config
       )
       .then((res) => {
@@ -131,7 +131,7 @@ const Library = () => {
               display="flex"
               justifyContent="center"
               backgroundColor="transparent"
-              onClick={handleToSongPage}
+              
             >
               <CardHeader>
                 <Flex
@@ -144,6 +144,7 @@ const Library = () => {
                     placeholder="Thumbnail"
                     boxSize="150px"
                     borderRadius="15px"
+                    onClick={handleToSongPage}
                   />
                   <Flex className="button-container">
                     <Button
@@ -160,7 +161,7 @@ const Library = () => {
                   </Flex>
                 </Flex>
               </CardHeader>
-              <CardBody mt={-2} onClick={() => handleLikeMusic(song.titleSong)}>
+              <CardBody mt={-2} onClick={() => handleGetMusic(song._id)}>
                 <Text
                   alignContent="center"
                   style={{ overflow: "hidden", textOverflow: "ellipsis" }}

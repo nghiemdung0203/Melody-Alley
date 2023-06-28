@@ -3,9 +3,12 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { BsFillPlayFill } from "react-icons/bs";
+import { useDispatch } from "react-redux";
+import { setSongs } from "../features/musicSlice";
 
-const AudioPlayer = ({ title }) => {
-  const [Song, setSong] = useState(null);
+const AudioPlayer = ({ Song }) => {
+
+  const dispatch = useDispatch()
 
   const config = {
     headers: {
@@ -13,20 +16,18 @@ const AudioPlayer = ({ title }) => {
     },
   };
 
-  useEffect(() => {
-    const fetchSong = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5002/api/song/SpecSong?titleSong=${title}`,
-          config
-        );
-        setSong(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchSong();
-  }, [title]);
+
+  const handleGetMusic = async() => {
+    await axios
+      .get(
+        `http://localhost:5002/api/song/SpecSong?SongId=${Song._id}`,
+        config
+      )
+      .then((res) => {
+        console.log(res);
+        dispatch(setSongs(res.data));
+      });
+  }
 
 
   const likeSong = async (song_id) => { // like bài hàt
@@ -65,6 +66,9 @@ const AudioPlayer = ({ title }) => {
             fontFamily="sans-serif"
             whiteSpace="nowrap"
             color="#1B9C85"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            width={'600px'}
           >
             {Song.titleSong}
           </Text>
@@ -77,6 +81,7 @@ const AudioPlayer = ({ title }) => {
             margin={2.5}
             width="110px"
             height="45px"
+            onClick={handleGetMusic}
           >
             <Text fontSize="2md" fontFamily="sans-serif">
               Play

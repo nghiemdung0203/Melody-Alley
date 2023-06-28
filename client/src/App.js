@@ -28,7 +28,7 @@ function App() {
           <Route exact path="/dashboard" element={<MusicPage />} />
           <Route exact path="/upload" element={<Upload />} />
           <Route exact path="/library" element={<Library />} />
-          <Route exact path="/Song/:title" element={<SongPage />} />
+          <Route exact path="/Song/:song_id" element={<SongPage />} />
         </Routes>
       </Layout>
     </div>

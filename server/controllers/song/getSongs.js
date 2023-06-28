@@ -8,12 +8,12 @@ const path = require("path");
 const sharp = require("sharp");
 
 module.exports.getSpecifySong = async (req, res) => {
-  const titleSong = req.query.titleSong;
+  const SongId = req.query.SongId;
   try {
-    const song = await Song.findOne({ titleSong });
+    const song = await Song.findById({ _id: SongId });
     console.log(song)
     if (!song) {
-      res.status(404).send(`Can't find ${titleSong}`)
+      res.status(404).send("Can't find that song}")
     } else {
       res.status(200).send(song)
     }

@@ -1,37 +1,37 @@
 .image-container {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .button-container {
-    position: absolute;
-    bottom: 0;
-    left: 4px;
-    right: 4px;
-    justify-content: center;
-    padding: 10px;
-    transition: all 0.3s ease-in-out;
-    opacity: 0;
-  }
-  
-  .image-container:hover .button-container {
-    opacity: 1;
-  }
-  
-  .image-container:hover .button-container button {
-    background-color: transparent;
-  }
-  
-  .button-container button {
-    margin: 5px;
-  }
-  
-  .button-container button:last-of-type {
-    color: white;
-    background-color: transparent;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
+  position: relative;
+  display: inline-block;
+}
+
+.button-container {
+  position: absolute;
+  bottom: 0;
+  left: 4px;
+  right: 4px;
+  justify-content: center;
+  padding: 10px;
+  transition: all 0.3s ease-in-out;
+  opacity: 0;
+}
+
+.image-container:hover .button-container {
+  opacity: 1;
+}
+
+.image-container:hover .button-container button {
+  background-color: transparent;
+}
+
+.button-container button {
+  margin: 5px;
+}
+
+.button-container button:last-of-type {
+  color: white;
+  background-color: transparent;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+

@@ -32,9 +32,15 @@ const MusicPlayer = ({ MusicTrack }) => {
   const dispatch = useDispatch();
 
   const [sliderValue, setSliderValue] = useState(0);
-  const [volume, setVolume] = useState(30);
   const [displayVolume, setDisplayVolume] = useState(false);
   const audioRef = useRef();
+  const [volume, setVolume] = useState(15);
+
+  useEffect(() => {
+    if (audioRef) {
+      audioRef.current.volume = volume / 100;
+    }
+  }, [volume, audioRef]);
 
   const handleTimeUpdate = () => {
     const currentTime = audioRef.current.currentTime;
@@ -80,20 +86,16 @@ const MusicPlayer = ({ MusicTrack }) => {
     setDisplayVolume(!displayVolume);
   };
 
-  const handleVolumeChange = (newValue) => {
-    const currentVolume = audioRef.current.volume;
-    audioRef.current.volume = newValue / 100;
-    setVolume(newValue);
-  };
+  const UpdateVolumeSlider = () => {};
 
   return (
-    <Box width="inherit" display="flex" flexDirection="row" bgColor={"#06283D"}>
+    <Box width="inherit" display="flex" flexDirection="row" bgColor={"#1B9C85"}>
       <Box
         id="button"
         display="flex"
         flexDirection="row"
         alignItems="center"
-        padding="5px 5px 0"
+        margin="4px"
       >
         <Button
           backgroundColor="transparent"
@@ -149,8 +151,12 @@ const MusicPlayer = ({ MusicTrack }) => {
                 aria-label="slider-ex-3"
                 orientation="vertical"
                 minH="32"
+                min={0}
+                max={100}
                 value={volume}
-                onChange={handleVolumeChange}
+                onChange={(e) => {
+                  setVolume(e.target.value);
+                }}
               >
                 <SliderTrack>
                   <SliderFilledTrack />
@@ -168,6 +174,7 @@ const MusicPlayer = ({ MusicTrack }) => {
           ref={audioRef}
           onTimeUpdate={handleTimeUpdate}
           autoPlay
+          loop={true}
         ></audio>
       </Box>
       <Box id="slider" display="flex" justifyItems="center" width="100%">
@@ -191,6 +198,7 @@ const MusicPlayer = ({ MusicTrack }) => {
           overflow="hidden"
           whiteSpace="nowrap"
           textOverflow="ellipsis"
+          margin={"4px"}
         >
           {MusicTrack[currentTrackIndex].titleSong}
         </Text>
