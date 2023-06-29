@@ -5,6 +5,7 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { BsFillPlayFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { setSongs } from "../features/musicSlice";
+import '../Style/AudioPlayer.css'
 
 const AudioPlayer = ({ Song }) => {
 
@@ -77,11 +78,13 @@ const AudioPlayer = ({ Song }) => {
           <Button
             leftIcon={<BsFillPlayFill />}
             borderRadius="25px"
-            backgroundColor="#87CBB9"
             margin={2.5}
             width="110px"
             height="45px"
+            position={'relative'}
             onClick={handleGetMusic}
+            zIndex={'1'}
+            className='Audio-button'
           >
             <Text fontSize="2md" fontFamily="sans-serif">
               Play
@@ -90,8 +93,8 @@ const AudioPlayer = ({ Song }) => {
           {Song && (
             <Button
               borderRadius="100px"
-              backgroundColor="#05BFDB"
               onClick={() => likeSong(Song._id)}
+              className="Audio-button"
             >
               <AiOutlineHeart />
             </Button>

@@ -10,6 +10,7 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { AiOutlineSend } from "react-icons/ai";
+import '../Style/AudioPlayer.css'
 
 const User = localStorage.getItem("user");
 
@@ -108,7 +109,7 @@ const Comment = ({ Song }) => {
           }}
           required
         />
-        <Button maxW={"3em"} margin={"10px"} onClick={CreateComment}>
+        <Button maxW={"3em"} margin={"10px"} onClick={CreateComment} backgroundColor={'transparent'} zIndex={'1'} overflow={"hidden"} position={'relative'} className="Audio-button">
           <AiOutlineSend />
         </Button>
       </Flex>
