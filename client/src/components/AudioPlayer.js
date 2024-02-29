@@ -21,7 +21,7 @@ const AudioPlayer = ({ Song }) => {
   const handleGetMusic = async() => {
     await axios
       .get(
-        `http://localhost:5002/api/song/SpecSong?SongId=${Song._id}`,
+        `http://localhost:5002/song/SpecSong?SongId=${Song._id}`,
         config
       )
       .then((res) => {
@@ -37,7 +37,7 @@ const AudioPlayer = ({ Song }) => {
 
     await axios
       .post(
-        "http://localhost:5002/api/LikedSong/LikedSong",
+        "http://localhost:5002/LikedSong/LikedSong",
         {
           'UserID': User_id,
           'SongID': song_id,

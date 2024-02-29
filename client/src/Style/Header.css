@@ -1,108 +1,69 @@
-.header-container button{
-    font-size: 15px;
-    display: inline;
-    position: relative;
-    z-index: 1;
-    text-decoration: none;
-    text-transform: uppercase;
-    text-align: center;
-    cursor: pointer;
-    left: 1.1%;
-    border: none;
-    background-color: transparent;
+.btn {
+  position: relative;
+  font-size: 1.4rem;
+  color: #fff;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  transition: all 500ms cubic-bezier(0.77, 0, 0.175, 1);
+  cursor: pointer;
+  user-select: none;
+  margin: 10px;
+  width: 150px;
+  height: 50px;
+  text-align: center;
+  padding-top: 0.5rem;
 }
 
-.header-container .animation{
-    position: absolute;
-    left: 0;
-    height: 100%;
-    max-width: 130px;
-    top: 0;
-    z-index: 0;
-    transition: all 1s ease 0s;
-    border-radius: 8px;
+.btn:before,
+.btn:after {
+  content: "";
+  position: absolute;
+  transition: inherit;
+  z-index: 1;
 }
 
-button:nth-child(1) {
-    width: 130px;
+.btn:hover {
+  color: black;
+  transition-delay: .5s;
 }
 
-button:nth-child(2) {
-    width: 130px;
+.btn:hover:before {
+  background: #fff;
+  transition-delay: 0s;
 }
 
-button:nth-child(3) {
-    width: 130px;
+.btn:hover:after {
+  background: #fff;
+  color: black;
+  transition-delay: .35s;
 }
 
-button:nth-child(4) {
-    width: 130px;
+/* From Top */
+
+.from-top:before,
+.from-top:after {
+  left: 0;
+  height: 0;
+  width: 100%;
+  background: #fff; /* Set background color for the reveal effect */
+  color: transparent;
 }
 
-button:nth-child(5) {
-    width: 130px;
+.from-top:before {
+  bottom: 0;
+  border: 1px solid #fff;
+  border-top: 0;
+  border-bottom: 0;
 }
 
-button:nth-child(1):hover{
-    border: none;
-    background-color: transparent;
+.from-top:after {
+  top: 0;
+  height: 0;
+  
 }
 
-button:nth-child(2):hover{
-    border: none;
-    background-color: transparent;
-}
-
-button:nth-child(3):hover{
-    border: none;
-    background-color: transparent;
-}
-
-button:nth-child(4):hover{
-    border: none;
-    background-color: transparent;
-}
-
-button:nth-child(5):hover{
-    border: none;
-    background-color: transparent;
-}
-
-
-.header-container .start-home, button:nth-child(1):hover~.animation {
-    width: 130px;
-    left: 0;
-    background-color: #1abc9c;
-    border: none;
-}
-
-.header-container .start-home, button:nth-child(2):hover~.animation {
-    width: 130px;
-    left: 137px;
-    background-color: #e74c3c;
-    border: none;
-
-}
-
-.header-container .start-home, button:nth-child(3):hover~.animation {
-    width: 130px;
-    left: 276px;
-    background-color: #3498db;
-    border: none;
-}
-
-.header-container .start-home, button:nth-child(4):hover~.animation {
-    width: 130px;
-    left: 413px;
-    background-color: #9b59b6;
-    border: none;
-    
-}
-
-.header-container .start-home, button:nth-child(5):hover~.animation {
-    width: 130px;
-    left: 552px;
-    background-color: #e67e22;
-    border: none;
-    
+.from-top:hover:before,
+.from-top:hover:after {
+  height: 100%;
+  color: black;
 }

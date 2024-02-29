@@ -31,7 +31,7 @@ const Comment = ({ Song }) => {
       try {
         await axios
           .post(
-            "http://localhost:5002/api/comment/GetComment",
+            "http://localhost:5002/comment/GetComment",
             { SongId: Song._id },
             config
           )
@@ -53,7 +53,7 @@ const Comment = ({ Song }) => {
     if (userComment !== null) {
       await axios
         .post(
-          "http://localhost:5002/api/comment/CreateComment",
+          "http://localhost:5002/comment/CreateComment",
           {
             UserCommentId: User_id,
             SongId: Song._id,

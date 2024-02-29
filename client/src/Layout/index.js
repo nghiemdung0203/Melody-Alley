@@ -11,20 +11,25 @@ export default function Layout({ children }) {
 
   return (
     <>
-      {!["/signin", "/signup"].includes(location.pathname) && (
-        <>
-          <Box>
-            <Header />
-          </Box>
-          <Box id="musicPlayer">
-            {MusicTrack.length > 0 ? (
-              <MusicPlayer MusicTrack={MusicTrack} />
-            ) : null}
-          </Box>
-        </>
-      )}
-      {children}
-      {/* {location.pathname === '/' && <Footer />} */}
+      <Box display={'flex'} flexDirection={'row'}>
+        {!["/login", "/register"].includes(location.pathname) && (
+          <>
+            <Box>
+              <Header />
+            </Box>
+          </>
+        )}
+        {children}
+      </Box>
+      {!["/login", "/register"].includes(location.pathname) && (
+          <>
+            <Box id="musicPlayer">
+              {MusicTrack.length > 0 ? (
+                <MusicPlayer MusicTrack={MusicTrack} />
+              ) : null}
+            </Box>
+          </>
+        )}
     </>
   );
 }

@@ -21,7 +21,7 @@ const SongPage = () => {
     const fetchSong = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5002/api/song/SpecSong?SongId=${song_id}`,
+          `http://localhost:5002/song/SpecSong?SongId=${song_id}`,
           config
         );
         setSong(response.data);

@@ -11,39 +11,41 @@ module.exports.getSpecifySong = async (req, res) => {
   const SongId = req.query.SongId;
   try {
     const song = await Song.findById({ _id: SongId });
-    console.log(song)
+    console.log(song);
     if (!song) {
-      res.status(404).send("Can't find that song}")
+      res.status(404).send("Can't find that song}");
     } else {
-      res.status(200).send(song)
+      res.status(200).send(song);
     }
   } catch (err) {
     res.status(500).send(err.message);
   }
 };
 
-module.exports.getallSongs = async (req, res) => {
+module.exports.getUploadedSongs = async (req, res) => {
+  const { Author_Id } = req.body;
   try {
-    Song.find({}).then((result) => {
+    Song.find({ AuthorID: Author_Id }).then((result) => {
       res.status(200).send(result);
     });
   } catch (error) {
-    console.log(error);
+    res.status(200).send(error.message);
   }
 };
-
 
 module.exports.createSong = async (req, res) => {
   try {
     const mp3Path = req.file.path;
+    console.log(mp3Path)
     const now = new Date();
 
     console.log(req.body.genre);
-    
+
     // Adjust the font of the originalname
     const originalnameBuffer = Buffer.from(req.file.originalname, "binary");
+    console.log(originalnameBuffer)
     const originalname = iconv.decode(originalnameBuffer, "utf-8");
-
+    console.log(originalname)
     const thumbnailDir = "thumbnails";
     const thumbnailPath = path.join(thumbnailDir, `${originalname}.png`);
 
@@ -61,10 +63,10 @@ module.exports.createSong = async (req, res) => {
     jsmediatags.read(mp3Path, {
       onSuccess: function (tag) {
         if (tag && tag.tags.picture) {
-          const { title, artist } = tag.tags;
           var tags = tag.tags;
+          console.log(tag)
           const pictureData = Buffer.from(tags.picture.data);
-          
+
           // Create a new Sharp object from the picture data
           const img = sharp(pictureData);
 
@@ -88,7 +90,7 @@ module.exports.createSong = async (req, res) => {
                     titleSong: originalname,
                     Thumbnail: result.secure_url,
                     URL: mp3Upload.secure_url,
-                    AuthorID: req.body.AuthorID || null,
+                    AuthorID: req.body.author || null,
                     GenreID: req.body.genre || null,
                     CreateAt: now,
                   });
@@ -114,5 +116,17 @@ module.exports.createSong = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send(error.message);
+  }
+};
+
+module.exports.SearchSong = async (req, res) => {
+  const { SongName } = req.body;
+  try {
+    const SearchingSong = await Song.find({
+      titleSong: { $regex: SongName, $options: "i" },
+    });
+    res.status(200).send(SearchingSong);
+  } catch (err) {
+    res.status(500).send(err.message);
   }
 };

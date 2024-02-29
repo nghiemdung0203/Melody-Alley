@@ -1,61 +1,76 @@
 //@ts-check
-import { Box, Button, HStack, Image, Text } from "@chakra-ui/react";
-import React from "react";
-import { AiOutlineCloudUpload } from "react-icons/ai";
+import {
+  Box,
+  Button,
+  HStack,
+  Image,
+  Input,
+  InputGroup,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverFooter,
+  PopoverHeader,
+  PopoverTrigger,
+  Portal,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import React, { useState } from "react";
+import {
+  AiOutlineCloudUpload,
+  AiOutlineFileSearch,
+  AiOutlineSearch,
+} from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
-import { BiLibrary, BiHomeCircle } from "react-icons/bi";
-import { NavLink } from "react-router-dom";
-import '../Style/Header.css'
+import { BiLibrary, BiHomeCircle, BiLogOut } from "react-icons/bi";
+import { NavLink, useNavigate } from "react-router-dom";
+import "../Style/Header.css";
+import axios from "axios";
 const Header = () => {
+  const [searchSong, setSearch] = useState("");
+  const navigate = useNavigate();
+  const SearchSong = () => {
+    navigate(`/Search/search?q=${encodeURIComponent(searchSong)}`);
+  };
+
+  const LogOut = () => {
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+
   return (
-    <Box
-      width="100%"
+    <VStack
+      gap="15px"
       display={"flex"}
-      justifyContent={"space-around"}
-      backgroundColor={"Transparent"}
-      margin={"10px"}
+      justifyContent={"center"}
+      alignItems={"center"}
+      width={"100%"}
       position={"relative"}
-      right={"1%"}
+      backgroundColor={"black"}
+      height={'100vh'}
     >
-      <HStack
-        gap="0px"
-        maxWidth={"100%"}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        position={"relative"}
-        className="header-container"
+      <div
+        className="btn from-top"
       >
-        <Button leftIcon={<BiHomeCircle />}>
-          <NavLink to="/dashboard">Home</NavLink>
-        </Button>
-        <Button leftIcon={<BiLibrary />}>
-          <NavLink to="/library">Library</NavLink>
-        </Button>
-        <Button>Icon</Button>
-        <Button leftIcon={<AiOutlineCloudUpload />}>
-          <NavLink to="/upload">Upload</NavLink>
-        </Button>
-        <Button leftIcon={<CgProfile />}>Profile</Button>
-        <Box className="animation start-home"></Box>
-      </HStack>
-      <Box
-        display={"flex"}
-        flexDirection={"row"}
-        justifyContent={"center"}
-        alignItems={"center"}
-      >
-        <Image
-          src="https://via.placeholder.com/50"
-          borderRadius="full"
-          boxSize="50px"
-          margin={"5px 10px"}
-        />
-        <Text fontSize={"2xl"} fontFamily={"sans-serif"}>
-          Nghieem quoc Dung
-        </Text>
+        <NavLink to="/">Home</NavLink>
+      </div>
+      <Box className="btn from-top">
+        <NavLink to="/library">Library</NavLink>
       </Box>
-    </Box>
+      <Box className="btn from-top">
+        <NavLink to="/upload">Upload</NavLink>
+      </Box>
+      <Box className="btn from-top">
+        <NavLink to="/profile">Profile</NavLink>
+      </Box>
+    </VStack>
   );
 };
 

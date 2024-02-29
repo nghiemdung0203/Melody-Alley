@@ -9,6 +9,8 @@ const authRoutes = require('./routes/authRoutes')
 const songRoutes = require('./routes/songRoutes')
 const likedSongRoutes = require('./routes/LikedSongRoutes')
 const commentRoutes = require('./routes/commentRoutes')
+const PlaylistRoutes = require('./routes/PlaylistRoutes')
+const FollowRoutes = require('./routes/FollowRoutes')
 
 const PORT = process.env.PORT || process.env.API_PORT
 
@@ -18,11 +20,12 @@ app.use(cors())
 
 //register routes
 
-app.use('/api/auth', authRoutes)
-app.use('/api/song', songRoutes);
-app.use('/api/LikedSong', likedSongRoutes)
-app.use('/api/comment', commentRoutes)
-
+app.use('/auth', authRoutes)
+app.use('/song', songRoutes);
+app.use('/LikedSong', likedSongRoutes)
+app.use('/comment', commentRoutes)
+app.use('/Playlist', PlaylistRoutes)
+app.use('/Follow', FollowRoutes)
 const server = http.createServer(app);
 
 mongoose.set("strictQuery", false);

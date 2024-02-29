@@ -4,14 +4,18 @@ import { Box, Container, Text } from "@chakra-ui/react";
 import MusicRecomendation from "../components/MusicRecomendation";
 import { useSelector } from "react-redux";
 
-
 const MusicPage = () => {
   const [music, setMusic] = useState([]);
+
+  const User = localStorage.getItem("user");
+  const User_id = JSON.parse(User).id;
+
   const fetchMusic = async () => {
     const res = await axios
-      .get("http://localhost:5002/api/song/songs")
+      .post("http://localhost:5002/song/songs", { Author_Id: User_id })
       .then((result) => {
         setMusic(result.data);
+        console.log(result.data);
       });
   };
 
@@ -19,11 +23,8 @@ const MusicPage = () => {
     fetchMusic();
   }, []);
   return (
-    <Container maxW="100%" height="100vh" backgroundColor="#FFFFFF">
-      <Box mt={8}>
-        <MusicRecomendation music={music} />
-      </Box>
-      
+    <Container minW={'87.8%'} height="100vh" backgroundColor="black">
+      <MusicRecomendation music={music} />
     </Container>
   );
 };

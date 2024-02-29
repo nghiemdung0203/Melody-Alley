@@ -8,15 +8,15 @@ import Upload from "./pages/Upload";
 import Layout from "./Layout";
 import Library from "./pages/Library";
 import SongPage from "./pages/SongPage";
+import SearchPage from "./pages/SearchPage";
+import Profile from "./pages/Profile";
 
 function App() {
   const navigate = useNavigate();
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
-      navigate("/dashboard");
-    } else {
-      navigate("/login");
+      navigate('/dashboard');
     }
   }, []);
   return (
@@ -29,6 +29,8 @@ function App() {
           <Route exact path="/upload" element={<Upload />} />
           <Route exact path="/library" element={<Library />} />
           <Route exact path="/Song/:song_id" element={<SongPage />} />
+          <Route exact path="/Search/search" element={<SearchPage />} />
+          <Route exact path="/profile" element={<Profile />} />
         </Routes>
       </Layout>
     </div>

@@ -42,7 +42,7 @@ const Login = () => {
   const onSubmit = async ({ email, password }) => {
     try {
       await axios
-        .post("http://localhost:5002/api/auth/login", {
+        .post("http://localhost:5002/auth/login", {
           mail: email,
           password: password,
         })
