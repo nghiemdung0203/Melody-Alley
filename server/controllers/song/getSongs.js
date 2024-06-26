@@ -24,14 +24,23 @@ module.exports.getSpecifySong = async (req, res) => {
 
 module.exports.getUploadedSongs = async (req, res) => {
   const { Author_Id } = req.body;
+  console.log(Author_Id)
   try {
     Song.find({ AuthorID: Author_Id }).then((result) => {
-      res.status(200).send(result);
+      const songs = result.map((song) => ({
+        id: song._id,
+        title: song.titleSong,
+        artist: song.AuthorID,
+        artwork: song.Thumbnail,
+        url: song.URL,
+      }));
+      res.status(200).send(songs);
     });
   } catch (error) {
     res.status(200).send(error.message);
   }
 };
+
 
 module.exports.createSong = async (req, res) => {
   try {
