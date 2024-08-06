@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MusicContainer from './screens/MusicContainer';
 import OnboardingScreen from './screens/OnBoarding';
 import Login_Register from './screens/Login_Register';
+import MusicDashboard from './screens/MusicDashboard';
 
 
 const Stack = createNativeStackNavigator();
@@ -12,7 +13,7 @@ const App = () => {
   return (
     
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MusicContainer">
+        <Stack.Navigator initialRouteName="MusicDashboard">
           <Stack.Screen
             options={{headerShown: false}}
             name="MusicContainer"
@@ -27,6 +28,11 @@ const App = () => {
             options={{headerShown: false}}
             name="Login"
             component={Login_Register}
+          />
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="MusicDashboard"
+            component={MusicDashboard}
           />
         </Stack.Navigator>
       </NavigationContainer>
