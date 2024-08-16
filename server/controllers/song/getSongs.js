@@ -32,7 +32,7 @@ module.exports.getUploadedSongs = async (req, res) => {
         title: song.titleSong,
         artist: song.AuthorID,
         artwork: song.Thumbnail,
-        url: song.URL,
+        url: song.url,
       }));
       res.status(200).send(songs);
     });
@@ -98,7 +98,7 @@ module.exports.createSong = async (req, res) => {
                   const newSong = new Song({
                     titleSong: originalname,
                     Thumbnail: result.secure_url,
-                    URL: mp3Upload.secure_url,
+                    url: mp3Upload.secure_url,
                     AuthorID: req.body.author || null,
                     GenreID: req.body.genre || null,
                     CreateAt: now,
@@ -139,3 +139,16 @@ module.exports.SearchSong = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
+
+
+module.exports.getTopTrack = async (req, res) => {
+  try {
+    const topTracks = await Song.find()
+      .sort({ listenCount: -1 }) // Sort by listenCount in descending order
+      .limit(10) // Limit the results to the top 10
+      .select("titleSong listenCount url Thumbnail AuthorID GenreID");
+      return res.status(200).json(topTracks);
+  } catch (error) {
+    return  res.status(500).send(error);
+  }
+}

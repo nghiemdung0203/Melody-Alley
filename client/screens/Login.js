@@ -14,13 +14,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import Font from '../config/Font';
+import { useDispatch } from 'react-redux';
+import { setUserDetails } from '../redux/reducers/userReducer';
 
-export default function Login_Register() {
+export default function Login() {
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const navigate = useNavigation();
-
+  const dispatch = useDispatch()
 
   const login_Process = async() => {
     await axios
@@ -30,7 +32,9 @@ export default function Login_Register() {
       })
       .then((response) => {
         console.log(response.data);
-        navigate.navigate('MusicContainer')
+        
+        dispatch(setUserDetails(response.data))
+        navigate.navigate('MusicDashboard')
 
         // Handle successful response here
       })
@@ -40,8 +44,15 @@ export default function Login_Register() {
       });
   };
 
+
+  const toRegister = ()=> {
+    navigate.navigate('Register')
+  }
+
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{
+      backgroundColor: '#ffffff'
+    }}>
       <View
         style={{
           padding: 20,
@@ -103,7 +114,7 @@ export default function Login_Register() {
         <TouchableOpacity
           style={{
             padding: 10,
-          }}>
+          }} onPress={toRegister}>
           <Text
             style={{
               fontFamily: Font['poppins-semiBold'],
