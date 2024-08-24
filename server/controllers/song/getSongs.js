@@ -42,13 +42,9 @@ module.exports.getUploadedSongs = async (req, res) => {
 };
 
 
-module.exports.createSong = async (req, res) => {
+module.exports.getTrackInfo = async (req, res) => {
   try {
     const mp3Path = req.file.path;
-    console.log(mp3Path)
-    const now = new Date();
-
-    console.log(req.body.genre);
 
     // Adjust the font of the originalname
     const originalnameBuffer = Buffer.from(req.file.originalname, "binary");
@@ -63,59 +59,53 @@ module.exports.createSong = async (req, res) => {
       fs.mkdirSync(thumbnailDir);
     }
 
-    const mp3Upload = await cloudinary.uploader.upload(mp3Path, {
-      resource_type: "video",
-      format: "mp3",
-      public_id: originalname,
-    });
+
 
     jsmediatags.read(mp3Path, {
       onSuccess: function (tag) {
-        if (tag && tag.tags.picture) {
-          var tags = tag.tags;
-          console.log(tag)
-          const pictureData = Buffer.from(tags.picture.data);
+        var tags = tag.tags;
+        var artist = tags.artist;
+        var album = tags.album;
+        var title = tags.title;
+        var genre = tags.genre;
 
-          // Create a new Sharp object from the picture data
-          const img = sharp(pictureData);
 
-          // Resize the image and save it to a file
-          img.resize(100, 100).toFile(thumbnailPath, (err, info) => {
-            if (err) {
-              console.error(err);
-            } else {
-              cloudinary.uploader.upload(thumbnailPath, (error, result) => {
-                if (error) {
-                  console.log(error);
+        const pictureData = Buffer.from(tags.picture.data);
+
+        // Create a new Sharp object from the picture data
+        const img = sharp(pictureData);
+
+        // Resize the image and save it to a file
+        img.resize(100, 100).toFile(thumbnailPath, (err, info) => {
+          if (err) {
+            console.error(err);
+          } else {
+            cloudinary.uploader.upload(thumbnailPath, (error, result) => {
+              if (error) {
+                return res.status(500).send(error);
+              } else {
+                fs.unlink(thumbnailPath, (error, res) => {
+                  if (error) {
+                    console.log(error);
+                  } else {
+                    console.log("thumbnail unlinked");
+                  }
+                });
+                const newSong = new Song({
+                  titleSong: title,
+                  Thumbnail: result.secure_url,
+                  AuthorID: artist,
+                  GenreID: genre,
+                });
+                if (newSong) {
+                  return res.status(200).send(newSong);
                 } else {
-                  fs.unlink(thumbnailPath, (error, res) => {
-                    if (error) {
-                      console.log(error);
-                    } else {
-                      console.log("thumbnail unlinked");
-                    }
-                  });
-                  const newSong = new Song({
-                    titleSong: originalname,
-                    Thumbnail: result.secure_url,
-                    url: mp3Upload.secure_url,
-                    AuthorID: req.body.author || null,
-                    GenreID: req.body.genre || null,
-                    CreateAt: now,
-                  });
-                  newSong.save((err, savedSong) => {
-                    if (err) {
-                      console.log(err);
-                      res.status(500).send(err.message);
-                    } else {
-                      res.status(200).send(savedSong);
-                    }
-                  });
+                  return
                 }
-              });
-            }
-          });
-        }
+              }
+            });
+          }
+        });
       },
       onError: function (error) {
         console.error("Error reading MP3 file:", error);
@@ -127,6 +117,40 @@ module.exports.createSong = async (req, res) => {
     res.status(500).send(error.message);
   }
 };
+
+
+module.exports.uploadSong = async (req, res) => {
+  try {
+    const { title, artist, thumbnail, genre } = req.body;
+    const now = new Date();
+
+    const mp3Path = req.file.path;
+
+    // Upload MP3 file to Cloudinary
+    const mp3Upload = await cloudinary.uploader.upload(mp3Path, {
+      resource_type: "video",
+      format: "mp3",
+      public_id: title,
+    });
+
+    // Create a new song document
+    const newSong = new Song({
+      titleSong: title,
+      Thumbnail: thumbnail,
+      url: mp3Upload.secure_url,
+      AuthorID: artist,
+      GenreID: genre,
+      CreateAt: now,
+    });
+
+    const savedSong = await newSong.save();
+    return res.status(200).send(savedSong);
+
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+
 
 module.exports.SearchSong = async (req, res) => {
   const { SongName } = req.body;
@@ -147,8 +171,8 @@ module.exports.getTopTrack = async (req, res) => {
       .sort({ listenCount: -1 }) // Sort by listenCount in descending order
       .limit(10) // Limit the results to the top 10
       .select("titleSong listenCount url Thumbnail AuthorID GenreID");
-      return res.status(200).json(topTracks);
+    return res.status(200).json(topTracks);
   } catch (error) {
-    return  res.status(500).send(error);
+    return res.status(500).send(error);
   }
 }

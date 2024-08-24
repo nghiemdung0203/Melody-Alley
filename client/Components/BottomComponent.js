@@ -1,109 +1,154 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Dimensions, Modal, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
 
 
-const {width} = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 const withBottomContainer = (Component) => {
-    const [repeatMode, setRepeatMode] = useState('off');
 
-    const repeatIcon = () => {
-        if (repeatMode === 'off') {
-          return 'repeat-off';
-        }
-    
-        if (repeatMode === 'track') {
-          return 'repeat-once';
-        }
-    
-        if (repeatMode === 'repeat') {
-          return 'repeat';
-        }
-      };
+ 
 
 
-      const changeRepeatMode = () => {
-        if (repeatMode === 'off') {
-          TrackPlayer.setRepeatMode(RepeatMode.Track);
-          setRepeatMode('track');
-        }
-    
-        if (repeatMode === 'track') {
-          TrackPlayer.setRepeatMode(RepeatMode.Queue);
-          setRepeatMode('repeat');
-        }
-    
-        if (repeatMode === 'repeat') {
-          TrackPlayer.setRepeatMode(RepeatMode.Off);
-          setRepeatMode('off');
-        }
-      };
+  const repeatIcon = () => {
+    if (repeatMode === 'off') {
+      return 'repeat-off';
+    }
+
+    if (repeatMode === 'track') {
+      return 'repeat-once';
+    }
+
+    if (repeatMode === 'repeat') {
+      return 'repeat';
+    }
+  };
+
+
+  const changeRepeatMode = () => {
+    if (repeatMode === 'off') {
+      TrackPlayer.setRepeatMode(RepeatMode.Track);
+      setRepeatMode('track');
+    }
+
+    if (repeatMode === 'track') {
+      TrackPlayer.setRepeatMode(RepeatMode.Queue);
+      setRepeatMode('repeat');
+    }
+
+    if (repeatMode === 'repeat') {
+      TrackPlayer.setRepeatMode(RepeatMode.Off);
+      setRepeatMode('off');
+    }
+  };
 
 
 
 
-    return ({ navigation, route, ...props }) => {
-        const excludeScreens = ['Login', 'Register'];
+  return ({ navigation, route, ...props }) => {
 
-        const shouldShowBottomContainer = !excludeScreens.includes(route.name);
+    const navigate = useNavigation();
+    const excludeScreens = ['Login', 'Register'];
+
+    const shouldShowBottomContainer = !excludeScreens.includes(route.name);
 
 
-        return (
-            <>
-                <Component {...props} />
-                {shouldShowBottomContainer && (
-                    <View style={style.bottomContainer}>
-                        <View style={style.bottomIconWrapper}>
-                            <TouchableOpacity>
-                                <FontAwesome name="home" size={30} color="#888888" />
-                            </TouchableOpacity>
+  const homeFunction = () => {
+    navigate.navigate('MusicDashboard')
+  }
 
-                            <TouchableOpacity onPress={changeRepeatMode}>
-                                <MaterialCommunityIcons
-                                    name={repeatIcon()}
-                                    size={30}
-                                    color={repeatMode !== 'off' ? '#FFD369' : '#888888'}
-                                />
-                            </TouchableOpacity>
 
-                            <TouchableOpacity>
-                                <FontAwesome name="home" size={30} color="#888888" />
-                            </TouchableOpacity>
+  const uploadFunction = () => {
+    navigate.navigate('Upload')
+  }
 
-                            <TouchableOpacity>
-                                <Ionicons name="share-outline" size={30} color="#888888" />
-                            </TouchableOpacity>
+  const libraryFunction = () => {
+    navigate.navigate('Library')
+  }
 
-                            <TouchableOpacity>
-                                <Ionicons name="ellipsis-horizontal" size={30} color="#888888" />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                )}
-            </>
-        );
-    };
+
+    return (
+      <>
+        <Component {...props} />
+        {shouldShowBottomContainer && (
+          <View style={{
+            width: width,
+            backgroundColor: '#fff',
+            position: 'relative'
+          }}>
+            <View style={style.bottomContainer}>
+              <View style={style.bottomIconWrapper}>
+                <TouchableOpacity style={style.bottomButton} onPress={homeFunction}>
+                  <FontAwesome name="home" size={30} color="black" />
+                  <Text style={style.buttonLabel}>
+                    HOME
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={style.bottomButton} onPress={libraryFunction}>
+                  <Ionicons
+                    name="library"
+                    size={30}
+                    color="black"
+                  />
+                   <Text style={style.buttonLabel}>
+                    LIBRARY
+                  </Text>
+                </TouchableOpacity>
+
+
+                <TouchableOpacity style={style.bottomButton} onPress={uploadFunction}>
+                  <Entypo name="upload-to-cloud" size={30} color="black" />
+                  <Text style={style.buttonLabel}>
+                    UPLOAD
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={style.bottomButton}>
+                  <Ionicons name="settings" size={30} color="black" />
+                  <Text style={style.buttonLabel}>
+                    SETTING
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        )}
+      </>
+    );
+  };
 };
 
 export default withBottomContainer;
 
 
 const style = StyleSheet.create({
-    bottomContainer: {
-        width: width * 0.9,
-        alignItems: 'center',
-        paddingVertical: 15,
-        borderWidth: 1,
-        borderRadius: 15,
-        alignSelf: 'center',
-        marginBottom: 20,
-        backgroundColor: '#fff'
-    },
-    bottomIconWrapper: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '80%',
-    },
+  bottomContainer: {
+    width: width * 0.9,
+    alignItems: 'center',
+    paddingVertical: 15,
+    borderWidth: 1,
+    borderRadius: 15,
+    alignSelf: 'center',
+    marginBottom: 20,
+    backgroundColor: '#fff'
+
+  },
+  bottomIconWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+  },
+  bottomButton: {
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  buttonLabel: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: 'black'
+  }
 })

@@ -27,13 +27,13 @@ import Slider from '@react-native-community/slider';
 
 const { width, heigh } = Dimensions.get('window');
 
-const MusicPlayer = ({ songs }) => {
+const MusicPlayer = ({ songs, selectedSongIndex }) => {
   const playBackState = usePlaybackState();
-  const [songIndex, setSongIndex] = useState(0);
+  const [songIndex, setSongIndex] = useState(selectedSongIndex);
   const progress = useProgress();
-  const [trackTitle, setTrackTitle] = useState(songs[0]?.title || '');
-  const [trackArtwork, setTrackArtwork] = useState(songs[0]?.artwork || '');
-  const [trackArtist, setTrackArtist] = useState(songs[0]?.artist || '');
+  const [trackTitle, setTrackTitle] = useState(songs[selectedSongIndex]?.title || '');
+  const [trackArtwork, setTrackArtwork] = useState(songs[selectedSongIndex]?.artwork || '');
+  const [trackArtist, setTrackArtist] = useState(songs[selectedSongIndex]?.artist || '');
 
  
   const [stateUpdated, setStateUpdated] = useState(true);
@@ -58,25 +58,31 @@ const MusicPlayer = ({ songs }) => {
     }
   };
 
-  const setUpPlayers = async songs => {
+  const setUpPlayers = async (songs) => {
     try {
-      await TrackPlayer.setupPlayer();
-
-      await TrackPlayer.updateOptions({
-        capabilities: [
-          Capability.Play,
-          Capability.Pause,
-          Capability.Stop,
-          Capability.SkipToNext,
-          Capability.SkipToPrevious,
-        ],
-      });
-
+      const isPlayerInitialized = await TrackPlayer.isServiceRunning();
+      if (!isPlayerInitialized) {
+        await TrackPlayer.setupPlayer();
+        await TrackPlayer.updateOptions({
+          capabilities: [
+            Capability.Play,
+            Capability.Pause,
+            Capability.Stop,
+            Capability.SkipToNext,
+            Capability.SkipToPrevious,
+          ],
+        });
+      }
+  
+      await TrackPlayer.reset(); // Reset any existing queue
       await TrackPlayer.add(songs);
+      await TrackPlayer.skip(selectedSongIndex);
+      await TrackPlayer.play();
     } catch (e) {
       console.log(e);
     }
   };
+  
 
   useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
     if (event.type === Event.PlaybackTrackChanged && event.nextTrack !== null) {
@@ -100,22 +106,50 @@ const MusicPlayer = ({ songs }) => {
 
   
 
-  const skipTo = async trackId => {
-    await TrackPlayer.skip(trackId);
+  const skipTo = async (trackId) => {
+    console.log(`Skipping to track with index: ${trackId}`);
+    if (trackId !== songIndex) { // Only skip if trackId is different
+      await TrackPlayer.skip(trackId);
+      setSongIndex(trackId); // Update state after skipping
+    }
   };
+  
 
   useEffect(() => {
-    setUpPlayers(songs);
-
-    scrollX.addListener(({ value }) => {
+    const initializePlayer = async () => {
+      await setUpPlayers(songs, selectedSongIndex);
+  
+      // Ensure the player is properly initialized before setting the song index
+      if (songSlider.current) {
+        const offset = selectedSongIndex * width;
+        songSlider.current.scrollToOffset({
+          offset,
+          animated: false, // Disable animation for initial scroll
+        });
+  
+        scrollX.setValue(offset); // Set scrollX value to reflect selectedSongIndex
+        setSongIndex(selectedSongIndex);
+        console.log(`Initialized and set songIndex to: ${selectedSongIndex}`);
+      }
+    };
+  
+    initializePlayer();
+  
+    const listener = scrollX.addListener(({ value }) => {
       const index = Math.round(value / width);
-      skipTo(index);
-      setSongIndex(index);
+      if (index !== songIndex) { // Only skip if the index has changed
+        console.log(`Scrolling to index: ${index}`);
+        skipTo(index);
+        setSongIndex(index);
+      }
     });
+  
     return () => {
       scrollX.removeAllListeners();
     };
-  }, []);
+  }, [selectedSongIndex]);
+  
+  
 
   const skipToNext = () => {
     songSlider.current.scrollToOffset({

@@ -10,11 +10,15 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 import withBottomContainer from './Components/BottomComponent';
 import { SafeAreaView } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Upload from './screens/Upload';
+import YourLibrary from './screens/YourLibrary';
 
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+
   return (
     <Provider store={store}>
       <SafeAreaView style={{
@@ -48,6 +52,12 @@ const App = () => {
               name="MusicDashboard"
               component={withBottomContainer(MusicDashboard)}
             />
+            <Stack.Screen
+              options={{ headerShown: false }}
+              name="Upload"
+              component={withBottomContainer(Upload)}
+            />
+           
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>

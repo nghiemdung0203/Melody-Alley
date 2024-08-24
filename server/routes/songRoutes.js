@@ -7,7 +7,8 @@ const upload = multer({ dest: 'uploads/' });
 
 router.get('/SpecSong', songRoutes.getSpecifySong)
 router.post('/songs', songRoutes.getUploadedSongs)
-router.post('/createSong', upload.single('song'),songRoutes.createSong)
+router.post('/createSong', upload.single('song'),songRoutes.getTrackInfo)
+router.post('/uploadSong', upload.single('song'),songRoutes.uploadSong)
 router.post('/SearchSong', songRoutes.SearchSong)
 router.get('/getTopTrack', songRoutes.getTopTrack)
 
