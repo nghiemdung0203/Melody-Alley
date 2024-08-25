@@ -35,15 +35,12 @@ const MusicPlayer = ({ songs, selectedSongIndex }) => {
   const [trackArtwork, setTrackArtwork] = useState(songs[selectedSongIndex]?.artwork || '');
   const [trackArtist, setTrackArtist] = useState(songs[selectedSongIndex]?.artist || '');
 
- 
-  const [stateUpdated, setStateUpdated] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
   const scrollX = useRef(new Animated.Value(0)).current;
   const songSlider = useRef(null);
 
-
-  const togglePlayBack = async playBackState => {
+  const togglePlayBack = async (playBackState) => {
     try {
       const currentTrack = await TrackPlayer.getCurrentTrack();
       if (currentTrack != null) {
@@ -84,73 +81,54 @@ const MusicPlayer = ({ songs, selectedSongIndex }) => {
   };
   
 
-  useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
+  useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
     if (event.type === Event.PlaybackTrackChanged && event.nextTrack !== null) {
       try {
         const track = await TrackPlayer.getTrack(event.nextTrack);
 
         const { titleSong, Thumbnail, AuthorID } = track;
-        console.log(track)
         setTrackTitle(titleSong);
         setTrackArtist(AuthorID);
         setTrackArtwork(Thumbnail);
       } catch (error) {
         console.log('Error fetching track data:', error);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     }
   });
 
-  
-
-  
-
   const skipTo = async (trackId) => {
-    console.log(`Skipping to track with index: ${trackId}`);
-    if (trackId !== songIndex) { // Only skip if trackId is different
-      await TrackPlayer.skip(trackId);
-      setSongIndex(trackId); // Update state after skipping
-    }
+    await TrackPlayer.skip(trackId);
   };
-  
 
   useEffect(() => {
-    const initializePlayer = async () => {
-      await setUpPlayers(songs, selectedSongIndex);
+    const setUpPlayerAndScroll = async () => {
+      await setUpPlayers(songs); // Set up the player with the song list
   
-      // Ensure the player is properly initialized before setting the song index
+      // Skip to the selected song after the player is set up
+      if (selectedSongIndex !== songIndex) {
+        await TrackPlayer.skip(selectedSongIndex); // Ensure we're on the correct song
+        setSongIndex(selectedSongIndex); // Update the local songIndex state
+      }
+  
+      // Scroll to the selected song
       if (songSlider.current) {
-        const offset = selectedSongIndex * width;
         songSlider.current.scrollToOffset({
-          offset,
-          animated: false, // Disable animation for initial scroll
+          offset: selectedSongIndex * width,
+          animated: false,
         });
-  
-        scrollX.setValue(offset); // Set scrollX value to reflect selectedSongIndex
-        setSongIndex(selectedSongIndex);
-        console.log(`Initialized and set songIndex to: ${selectedSongIndex}`);
       }
     };
   
-    initializePlayer();
+    setUpPlayerAndScroll(); // Call the function to set up the player and scroll
   
-    const listener = scrollX.addListener(({ value }) => {
-      const index = Math.round(value / width);
-      if (index !== songIndex) { // Only skip if the index has changed
-        console.log(`Scrolling to index: ${index}`);
-        skipTo(index);
-        setSongIndex(index);
-      }
-    });
-  
+    // Clean up scroll listener on component unmount
     return () => {
       scrollX.removeAllListeners();
     };
   }, [selectedSongIndex]);
   
-  
-
   const skipToNext = () => {
     songSlider.current.scrollToOffset({
       offset: (songIndex + 1) * width,
@@ -181,7 +159,6 @@ const MusicPlayer = ({ songs, selectedSongIndex }) => {
     <SafeAreaView style={style.container}>
       {isLoading ? (
         <View style={style.loadingContainer}>
-         
           <Text>Loading...</Text>
         </View>
       ) : (
@@ -192,7 +169,7 @@ const MusicPlayer = ({ songs, selectedSongIndex }) => {
               ref={songSlider}
               renderItem={renderSong}
               data={songs}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item._id}
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}
@@ -285,7 +262,6 @@ const MusicPlayer = ({ songs, selectedSongIndex }) => {
               </TouchableOpacity>
             </View>
           </View>
-          
         </>
       )}
     </SafeAreaView>
@@ -306,7 +282,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  
+
 
   imageWrapper: {
     width: 300,

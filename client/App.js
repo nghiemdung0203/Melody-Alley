@@ -57,7 +57,11 @@ const App = () => {
               name="Upload"
               component={withBottomContainer(Upload)}
             />
-           
+            <Stack.Screen
+              options={{ headerShown: false }}
+              name="Library"
+              component={withBottomContainer(YourLibrary)}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>

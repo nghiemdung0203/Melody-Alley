@@ -6,14 +6,18 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useSelector } from 'react-redux'
 const YourLibrary = () => {
-
+  const historyTracks = useSelector((state) => state.music.recentlyTracks);
+  console.log(historyTracks)
   const renderRecentlyPlayed = ({ item, index }) => {
     return (
       <View style={{
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: '5%'
+        marginTop: '5%',
+        paddingLeft: '8%',
+        paddingRight: '8%',
+        paddingBottom: '5%'
       }}>
         <TouchableOpacity style={{
           flexDirection: 'row',
@@ -61,8 +65,8 @@ const YourLibrary = () => {
   return (
     <View style={{
       flex: 1,
-
-    }}>
+      backgroundColor: '#fff'
+    }}> 
       <View style={styles.header}>
 
         <View style={{
@@ -89,7 +93,7 @@ const YourLibrary = () => {
       <View style={{
         flexDirection: 'column',
         width: '100%',
-        maxHeight: '80%',
+        flex: 1,
         marginTop: 20
       }}>
         <View style={{
@@ -129,15 +133,19 @@ const YourLibrary = () => {
         <Text style={{
           fontSize: 16,
           fontWeight: '600',
-          position: 'relative',
-          left: '6%',
-          top: '8%',
+          marginLeft: '6%', 
+          marginTop: 20,   
           color: 'black'
         }}>
           Recently played
         </Text>
+        <FlatList
+          data={historyTracks}
+          renderItem={(item, index) => renderRecentlyPlayed(item, index)}
+          keyExtractor={(item, index) => index.toString()}
+          showsVerticalScrollIndicator={false}
+        />
 
-       
       </View>
     </View>
   )
