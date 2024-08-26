@@ -4,7 +4,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   songsArray: [],
   selectedSongIndex: null,
-  recentlyTracks: []
+  recentlyTracks: [],
+  currentSong: {}
 };
 
 const musicSlice = createSlice({
@@ -21,10 +22,13 @@ const musicSlice = createSlice({
     setRecentlyTracks: (state, action) => {
       state.recentlyTracks.unshift(action.payload.recentlyTracks);
       state.recentlyTracks = state.recentlyTracks.slice(0, 20);
+    },
+    setCurrentSong: (state, action) => {
+      state.currentSong = action.payload.currentSong
     }
   }
 })
 
 
-export const {setSongsArray, setSelectSongIndex, setRecentlyTracks} = musicSlice.actions;
+export const {setSongsArray, setSelectSongIndex, setRecentlyTracks, setCurrentSong} = musicSlice.actions;
 export default musicSlice.reducer;

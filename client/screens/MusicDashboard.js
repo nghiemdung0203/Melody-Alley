@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { setRecentlyTracks, setSongsArray } from '../redux/reducers/reducer';
+import { setCurrentSong, setRecentlyTracks, setSongsArray } from '../redux/reducers/reducer';
 
 
 
@@ -35,7 +35,8 @@ const MusicDashboard = () => {
 
   const selectSong = (index) => {
     dispatch(setSongsArray({ songsArray: songs, selectedSongIndex: index }))
-    dispatch(setRecentlyTracks({recentlyTracks: songs[index]}))
+    dispatch(setRecentlyTracks({ recentlyTracks: songs[index] }))
+    dispatch(setCurrentSong({ currentSong: songs[index] }))
     navigation.navigate('MusicContainer')
   }
 
@@ -83,6 +84,7 @@ const MusicDashboard = () => {
           </View>
 
         </TouchableOpacity>
+
 
 
         <MaterialCommunityIcons name="dots-vertical" size={30} style={{

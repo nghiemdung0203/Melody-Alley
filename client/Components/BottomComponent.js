@@ -5,12 +5,14 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import MiniPlayer from './MiniPlayer';
 
 
 const { width } = Dimensions.get('window')
 const withBottomContainer = (Component) => {
 
- 
+
 
 
   const repeatIcon = () => {
@@ -55,29 +57,39 @@ const withBottomContainer = (Component) => {
 
     const shouldShowBottomContainer = !excludeScreens.includes(route.name);
 
+    const currentSong = useSelector((state) => state.music.currentSong)
 
-  const homeFunction = () => {
-    navigate.navigate('MusicDashboard')
-  }
+    const homeFunction = () => {
+      navigate.navigate('MusicDashboard')
+    }
 
 
-  const uploadFunction = () => {
-    navigate.navigate('Upload')
-  }
+    const uploadFunction = () => {
+      navigate.navigate('Upload')
+    }
 
-  const libraryFunction = () => {
-    navigate.navigate('Library')
-  }
+    const libraryFunction = () => {
+      navigate.navigate('Library')
+    }
 
 
     return (
       <>
+
+
         <Component {...props} />
+
+        {currentSong && Object.keys(currentSong).length > 0 && (
+          <MiniPlayer currentSong={currentSong}/>
+        )}
         {shouldShowBottomContainer && (
           <View style={{
             width: width,
             backgroundColor: '#fff',
-            position: 'relative'
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0
           }}>
             <View style={style.bottomContainer}>
               <View style={style.bottomIconWrapper}>
@@ -94,7 +106,7 @@ const withBottomContainer = (Component) => {
                     size={30}
                     color="black"
                   />
-                   <Text style={style.buttonLabel}>
+                  <Text style={style.buttonLabel}>
                     LIBRARY
                   </Text>
                 </TouchableOpacity>
@@ -129,13 +141,12 @@ const style = StyleSheet.create({
   bottomContainer: {
     width: width * 0.9,
     alignItems: 'center',
-    paddingVertical: 15,
+    paddingVertical: 10,
     borderWidth: 1,
     borderRadius: 15,
     alignSelf: 'center',
-    marginBottom: 20,
-    backgroundColor: '#fff'
-
+    backgroundColor: '#fff',
+    marginBottom: 10, // Reduce this value or remove it if not needed
   },
   bottomIconWrapper: {
     flexDirection: 'row',
