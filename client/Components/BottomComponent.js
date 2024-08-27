@@ -11,10 +11,6 @@ import MiniPlayer from './MiniPlayer';
 
 const { width } = Dimensions.get('window')
 const withBottomContainer = (Component) => {
-
-
-
-
   const repeatIcon = () => {
     if (repeatMode === 'off') {
       return 'repeat-off';
@@ -28,7 +24,6 @@ const withBottomContainer = (Component) => {
       return 'repeat';
     }
   };
-
 
   const changeRepeatMode = () => {
     if (repeatMode === 'off') {
@@ -47,49 +42,43 @@ const withBottomContainer = (Component) => {
     }
   };
 
-
-
-
   return ({ navigation, route, ...props }) => {
-
     const navigate = useNavigation();
-    const excludeScreens = ['Login', 'Register'];
+    const excludeScreens = ['Login', 'Register', 'MusicContainer']; // Added 'MusicContainer'
 
     const shouldShowBottomContainer = !excludeScreens.includes(route.name);
+    const showMiniPlayer = route.name !== 'MusicContainer'; // Determine if MiniPlayer should be shown
 
-    const currentSong = useSelector((state) => state.music.currentSong)
+    const currentSong = useSelector((state) => state.music.currentSong);
 
     const homeFunction = () => {
-      navigate.navigate('MusicDashboard')
-    }
-
+      navigate.navigate('MusicDashboard');
+    };
 
     const uploadFunction = () => {
-      navigate.navigate('Upload')
-    }
+      navigate.navigate('Upload');
+    };
 
     const libraryFunction = () => {
-      navigate.navigate('Library')
-    }
-
+      navigate.navigate('Library');
+    };
 
     return (
       <>
-
-
         <Component {...props} />
 
-        {currentSong && Object.keys(currentSong).length > 0 && (
-          <MiniPlayer currentSong={currentSong}/>
+        {showMiniPlayer && currentSong && Object.keys(currentSong).length > 0 && (
+          <MiniPlayer currentSong={currentSong} />
         )}
+
         {shouldShowBottomContainer && (
           <View style={{
-            width: width,
+            width: '100%', // Assuming you want full width
             backgroundColor: '#fff',
             position: 'absolute',
             bottom: 0,
             left: 0,
-            right: 0
+            right: 0,
           }}>
             <View style={style.bottomContainer}>
               <View style={style.bottomIconWrapper}>
@@ -101,16 +90,11 @@ const withBottomContainer = (Component) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity style={style.bottomButton} onPress={libraryFunction}>
-                  <Ionicons
-                    name="library"
-                    size={30}
-                    color="black"
-                  />
+                  <Ionicons name="library" size={30} color="black" />
                   <Text style={style.buttonLabel}>
                     LIBRARY
                   </Text>
                 </TouchableOpacity>
-
 
                 <TouchableOpacity style={style.bottomButton} onPress={uploadFunction}>
                   <Entypo name="upload-to-cloud" size={30} color="black" />

@@ -205,7 +205,7 @@ const MusicPlayer = ({ songs, selectedSongIndex }) => {
                 maximumValue={progress.duration}
                 thumbTintColor="#FFD369"
                 minimumTrackTintColor="#FFD369"
-                maximumTrackTintColor="#fff"
+                maximumTrackTintColor="#FFD369"
                 onSlidingComplete={async (value) => {
                   await TrackPlayer.seekTo(value);
                 }}

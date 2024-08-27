@@ -1,10 +1,30 @@
-import { View, Text, Dimensions, StyleSheet, Image } from 'react-native'
+import { View, Text, Dimensions, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import Fontisto from 'react-native-vector-icons/Fontisto'
+import Slider from '@react-native-community/slider'
+import TrackPlayer, { State, useProgress } from 'react-native-track-player'
 
 const { width } = Dimensions.get('window')
 const MiniPlayer = ({ currentSong }) => {
-  console.log(currentSong)
+  const progress = useProgress();
+
+
+
+  const togglePlayBack = async (playBackState) => {
+    try {
+      const currentTrack = await TrackPlayer.getCurrentTrack();
+      if (currentTrack != null) {
+        if (playBackState.state === State.Playing) {
+          await TrackPlayer.pause();
+        } else {
+          await TrackPlayer.play();
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <View style={{
       width: width,
@@ -14,6 +34,25 @@ const MiniPlayer = ({ currentSong }) => {
       left: 0,
       right: 0
     }}>
+      <View style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: -5, // Adjust this value to move the slider closer to miniPlayerContainer
+        paddingHorizontal: 10 // Add padding if needed
+      }}>
+        <Slider
+          style={{ flex: 1 }}
+          value={progress.position}
+          minimumValue={0}
+          maximumValue={progress.duration}
+          thumbTintColor='transparent'
+          minimumTrackTintColor="#FFD369"
+          maximumTrackTintColor="#ccc"
+          onSlidingComplete={async (value) => {
+            await TrackPlayer.seekTo(value);
+          }}
+        />
+      </View>
       <View style={styles.miniPlayerContainer}>
         <View style={styles.InfoTrack}>
           <Image source={{ uri: currentSong.Thumbnail }} style={{
@@ -35,12 +74,19 @@ const MiniPlayer = ({ currentSong }) => {
               {currentSong.AuthorID}
             </Text>
           </View>
-          <Fontisto name="play" size={30} style={styles.playButton} color='black' />
+          <TouchableOpacity style={{
+            marginLeft: 30,
+            alignSelf: 'center'
+          }} onPress={togglePlayBack}>
+            <Fontisto name="play" size={30} color='black' />
+          </TouchableOpacity>
         </View>
       </View>
     </View>
-  )
+  );
 }
+
+
 
 export default MiniPlayer
 
@@ -69,8 +115,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400'
   },
-  playButton: {
-    marginLeft: 30,
-    alignSelf: 'center'
-  }
+
 })
