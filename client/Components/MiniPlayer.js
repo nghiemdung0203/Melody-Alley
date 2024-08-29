@@ -1,13 +1,13 @@
 import { View, Text, Dimensions, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
-import Fontisto from 'react-native-vector-icons/Fontisto'
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import Slider from '@react-native-community/slider'
-import TrackPlayer, { State, useProgress } from 'react-native-track-player'
+import TrackPlayer, { State, usePlaybackState, useProgress } from 'react-native-track-player'
 
 const { width } = Dimensions.get('window')
 const MiniPlayer = ({ currentSong }) => {
   const progress = useProgress();
-
+  const playBackState = usePlaybackState();
 
 
   const togglePlayBack = async (playBackState) => {
@@ -77,8 +77,12 @@ const MiniPlayer = ({ currentSong }) => {
           <TouchableOpacity style={{
             marginLeft: 30,
             alignSelf: 'center'
-          }} onPress={togglePlayBack}>
-            <Fontisto name="play" size={30} color='black' />
+          }} onPress={() => { togglePlayBack(playBackState) }}>
+            <FontAwesome6 name={
+              playBackState.state === State.Playing
+                ? 'pause'
+                : 'play'
+            } size={30} color='black' />
           </TouchableOpacity>
         </View>
       </View>
