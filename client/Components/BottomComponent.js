@@ -11,36 +11,7 @@ import MiniPlayer from './MiniPlayer';
 
 const { width } = Dimensions.get('window')
 const withBottomContainer = (Component) => {
-  const repeatIcon = () => {
-    if (repeatMode === 'off') {
-      return 'repeat-off';
-    }
-
-    if (repeatMode === 'track') {
-      return 'repeat-once';
-    }
-
-    if (repeatMode === 'repeat') {
-      return 'repeat';
-    }
-  };
-
-  const changeRepeatMode = () => {
-    if (repeatMode === 'off') {
-      TrackPlayer.setRepeatMode(RepeatMode.Track);
-      setRepeatMode('track');
-    }
-
-    if (repeatMode === 'track') {
-      TrackPlayer.setRepeatMode(RepeatMode.Queue);
-      setRepeatMode('repeat');
-    }
-
-    if (repeatMode === 'repeat') {
-      TrackPlayer.setRepeatMode(RepeatMode.Off);
-      setRepeatMode('off');
-    }
-  };
+ 
 
   return ({ navigation, route, ...props }) => {
     const navigate = useNavigation();
@@ -123,11 +94,10 @@ export default withBottomContainer;
 
 const style = StyleSheet.create({
   bottomContainer: {
-    width: width * 0.9,
+    width: width ,
     alignItems: 'center',
     paddingVertical: 10,
-    borderWidth: 1,
-    borderRadius: 15,
+    
     alignSelf: 'center',
     backgroundColor: '#fff',
     marginBottom: 10, // Reduce this value or remove it if not needed

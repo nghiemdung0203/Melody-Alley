@@ -32,7 +32,8 @@ module.exports.LikedSong = async(req, res) => {
 };
 
 module.exports.getLikedSong = async (req, res) => {
-  const { UserID } = req.body;
+  const UserID = req.query.UserID;
+  console.log(UserID)
   const LikedSongList = await UserLikeSong.find({
     UserID: mongoose.Types.ObjectId(UserID),
   });

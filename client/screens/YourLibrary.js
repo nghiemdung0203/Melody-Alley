@@ -5,9 +5,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useSelector } from 'react-redux'
+import { useNavigation } from '@react-navigation/native'
 const YourLibrary = () => {
   const historyTracks = useSelector((state) => state.music.recentlyTracks);
-  console.log(historyTracks)
+  const navigation = useNavigation()
+
+  const goToLikedSong = () => {
+    navigation.navigate('LikedSong')
+  }
+
   const renderRecentlyPlayed = ({ item, index }) => {
     return (
       <View style={{
@@ -103,7 +109,7 @@ const YourLibrary = () => {
           gap: 50,
           elevation: 10
         }}>
-          <TouchableOpacity style={styles.buttonCom}>
+          <TouchableOpacity style={styles.buttonCom} onPress={goToLikedSong}>
             <AntDesign name="heart" size={20} color="red" />
             <Text style={styles.buttonLabel}>Liked tracks</Text>
           </TouchableOpacity>

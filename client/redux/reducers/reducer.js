@@ -5,7 +5,8 @@ const initialState = {
   songsArray: [],
   selectedSongIndex: null,
   recentlyTracks: [],
-  currentSong: {}
+  currentSong: {},
+  currentLikedSong: []
 };
 
 const musicSlice = createSlice({
@@ -25,10 +26,14 @@ const musicSlice = createSlice({
     },
     setCurrentSong: (state, action) => {
       state.currentSong = action.payload.currentSong
+    }, 
+    setCurrentLikedSong: (state, action) => {
+      state.currentLikedSong.unshift(action.payload.currentLikedSong);
+      state.currentLikedSong = state.currentLikedSong.slice(0, 30);
     }
   }
 })
 
 
-export const {setSongsArray, setSelectSongIndex, setRecentlyTracks, setCurrentSong} = musicSlice.actions;
+export const {setSongsArray, setSelectSongIndex, setRecentlyTracks, setCurrentSong, setCurrentLikedSong} = musicSlice.actions;
 export default musicSlice.reducer;
