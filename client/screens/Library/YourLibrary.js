@@ -10,9 +10,11 @@ const YourLibrary = () => {
   const historyTracks = useSelector((state) => state.music.recentlyTracks);
   const navigation = useNavigation()
 
-  const goToLikedSong = () => {
-    navigation.navigate('LikedSong')
+  const navigateTo = (screenName) => {
+    navigation.navigate(screenName)
   }
+
+  
 
   const renderRecentlyPlayed = ({ item, index }) => {
     return (
@@ -109,11 +111,11 @@ const YourLibrary = () => {
           gap: 50,
           elevation: 10
         }}>
-          <TouchableOpacity style={styles.buttonCom} onPress={goToLikedSong}>
+          <TouchableOpacity style={styles.buttonCom} onPress={()=>navigateTo('LikedSong')}>
             <AntDesign name="heart" size={20} color="red" />
             <Text style={styles.buttonLabel}>Liked tracks</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonCom}>
+          <TouchableOpacity style={styles.buttonCom} onPress={()=>navigateTo('PlaylistLibrary')}>
             <MaterialCommunityIcons name="playlist-music-outline" size={20} color="#008080" />
             <Text style={styles.buttonLabel}>Playlists</Text>
           </TouchableOpacity>

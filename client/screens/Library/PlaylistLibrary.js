@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const Setting = () => {
+const PlaylistLibrary = () => {
   return (
     <View>
-      <Text>Setting</Text>
+      <Text>PlaylistLibrary</Text>
     </View>
   )
 }
 
-export default Setting
+export default PlaylistLibrary

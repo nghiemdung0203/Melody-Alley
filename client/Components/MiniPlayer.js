@@ -9,7 +9,6 @@ const MiniPlayer = ({ currentSong }) => {
   const progress = useProgress();
   const playBackState = usePlaybackState();
 
-
   const togglePlayBack = async (playBackState) => {
     try {
       const currentTrack = await TrackPlayer.getCurrentTrack();
@@ -26,28 +25,16 @@ const MiniPlayer = ({ currentSong }) => {
   };
 
   return (
-    <View style={{
-      width: width,
-      backgroundColor: '#fff',
-      position: 'absolute',
-      bottom: 70,
-      left: 0,
-      right: 0
-    }}>
-      <View style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: -5, // Adjust this value to move the slider closer to miniPlayerContainer
-        paddingHorizontal: 10 // Add padding if needed
-      }}>
+    <View style={styles.container}>
+      <View style={styles.sliderContainer}>
         <Slider
-          style={{ flex: 1 }}
+          style={styles.slider}
           value={progress.position}
           minimumValue={0}
           maximumValue={progress.duration}
-          thumbTintColor='transparent'
-          minimumTrackTintColor="#FFD369"
-          maximumTrackTintColor="#ccc"
+          thumbTintColor='#fd0a06'
+          minimumTrackTintColor="#333"
+          maximumTrackTintColor='#888886'
           onSlidingComplete={async (value) => {
             await TrackPlayer.seekTo(value);
           }}
@@ -55,18 +42,8 @@ const MiniPlayer = ({ currentSong }) => {
       </View>
       <View style={styles.miniPlayerContainer}>
         <View style={styles.InfoTrack}>
-          <Image source={{ uri: currentSong.Thumbnail }} style={{
-            width: 65,
-            height: 65,
-            borderTopLeftRadius: 10,
-            borderBottomLeftRadius: 10
-          }} />
-          <View style={{
-            flexDirection: 'column',
-            maxWidth: '50%',
-            justifyContent: 'center',
-            marginLeft: 15
-          }}>
+          <Image source={{ uri: currentSong.Thumbnail }} style={styles.thumbnail} />
+          <View style={styles.songInfo}>
             <Text style={styles.titleSong} numberOfLines={1} ellipsizeMode='tail'>
               {currentSong.titleSong}
             </Text>
@@ -74,10 +51,7 @@ const MiniPlayer = ({ currentSong }) => {
               {currentSong.AuthorID}
             </Text>
           </View>
-          <TouchableOpacity style={{
-            marginLeft: 30,
-            alignSelf: 'center'
-          }} onPress={() => { togglePlayBack(playBackState) }}>
+          <TouchableOpacity style={styles.playButton} onPress={() => { togglePlayBack(playBackState) }}>
             <FontAwesome6 name={
               playBackState.state === State.Playing
                 ? 'pause'
@@ -90,26 +64,47 @@ const MiniPlayer = ({ currentSong }) => {
   );
 }
 
-
-
 export default MiniPlayer
 
 const styles = StyleSheet.create({
+  container: {
+    width: width,
+    backgroundColor: '#fff',
+    position: 'absolute',
+    bottom: 88,
+    left: 0,
+    right: 0,
+    borderWidth: 0.5,
+    borderColor: 'gray'
+  },
+  sliderContainer: {
+    width: '100%',
+    paddingHorizontal: 0,
+  },
+  slider: {
+    width: '100%',
+    height: 40,
+  },
   miniPlayerContainer: {
-    width: width * 0.9,
-
-    borderWidth: 1,
-    borderRadius: 15,
+    width: '100%',
     alignSelf: 'center',
-    marginBottom: 20,
-    borderWidth: 1,
     justifyContent: 'space-between'
   },
   InfoTrack: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     width: '100%',
-    alignSelf: 'flex-start',
+    paddingHorizontal: 15,
+  },
+  thumbnail: {
+    width: 65,
+    height: 65,
+  },
+  songInfo: {
+    flexDirection: 'column',
+    flex: 1,
+    marginLeft: 15,
   },
   titleSong: {
     fontSize: 16,
@@ -119,5 +114,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400'
   },
-
+  playButton: {
+    padding: 10,
+  }
 })

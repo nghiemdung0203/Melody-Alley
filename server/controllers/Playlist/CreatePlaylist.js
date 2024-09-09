@@ -12,12 +12,12 @@ module.exports.CreatePlaylist = (req, res) => {
 
     NewPlaylist.save((err, savedPlaylist) => {
       if (err) {
-        res.status(400).send(err.message);
+        res.status(500).send(err.message);
       } else {
         res.status(200).send(savedPlaylist);
       }
     });
   } catch (err) {
-    res.status(400).send(err.message);
+    res.status(500).send(err.message);
   }
 };

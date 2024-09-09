@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, Modal, ActivityIndicator } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -9,10 +9,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentSong, setRecentlyTracks, setSongsArray, setCurrentLikedSong } from '../redux/reducers/reducer';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
 import Clipboard from '@react-native-clipboard/clipboard';
+import ModalLogin from '../Components/ModalLogin';
 
 const MusicDashboard = () => {
   const [songs, setSongs] = useState([]);
-  const [LikedSong, setLikedSong] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -38,8 +38,8 @@ const MusicDashboard = () => {
   }
 
 
-  const ToLogin = () => {
-    navigation.navigate('Login')
+  const NavigateTo = (screenName, params = {}) => {
+    navigation.navigate(screenName, params);
   }
 
 
@@ -50,14 +50,10 @@ const MusicDashboard = () => {
           UserID: user.id,
           SongID: songID
         });
-  
+
         if (response.status === 200) {
-          if (response.data.SongID) {
-            console.log('Song liked:', response.data);
-            dispatch(setCurrentLikedSong({ currentLikedSong: response.data }));
-          } else if (response.data.msg) {
-            console.log(response.data.msg);
-          }
+          console.log('Song liked:', response.data);
+          dispatch(setCurrentLikedSong({ currentLikedSong: response.data }));
         }
       } catch (error) {
         console.error('Error liking song:', error);
@@ -66,21 +62,29 @@ const MusicDashboard = () => {
       setModalVisible(true);
     }
   };
-  
+
+
+
 
 
 
   const selectSong = (index) => {
-    dispatch(setSongsArray({ songsArray: songs, selectedSongIndex: index }));
+    dispatch(setSongsArray({ songsArray: songs }));
     dispatch(setRecentlyTracks({ recentlyTracks: songs[index] }));
     dispatch(setCurrentSong({ currentSong: songs[index] }));
-    navigation.navigate('MusicContainer');
+    navigation.navigate('MusicContainer', { SongID: index });
   };
 
 
-  const copyLink =  (songLink) => {
-      console.log(`Copy: ${songLink}`); 
+  const copyLink = (SongID) => {
+    const appDomain = 'yourapp://';
+    const musicPlayerRoute = 'MusicPlayer';
+    const link = `${appDomain}${musicPlayerRoute}?songIndex=${SongID}`;
+
+    Clipboard.setString(link);
   }
+
+
   const renderItem = ({ item, index }) => {
     const isLiked = currentLikedSong.some((likedSong) => {
       return likedSong.SongID === item._id;
@@ -101,11 +105,11 @@ const MusicDashboard = () => {
               <AntDesign name={isLiked ? 'heart' : 'hearto'} size={30} color={isLiked ? 'red' : '#333'} />
               <Text style={styles.labelMenuOption}>Like Song</Text>
             </MenuOption>
-            <MenuOption onSelect={() => copyLink(item.url)} style={styles.menuOption}>
+            <MenuOption onSelect={() => NavigateTo('AddToPlaylist', { song: songs[index] })} style={styles.menuOption}>
               <MaterialIcons name="playlist-add" size={30} color="#333" />
               <Text style={styles.labelMenuOption}>Add playlist</Text>
             </MenuOption>
-            <MenuOption onSelect={() => { }} style={styles.menuOption}>
+            <MenuOption onSelect={() => { copyLink(item._id) }} style={styles.menuOption}>
               <Feather name="copy" size={30} color="#333" />
               <Text style={styles.labelMenuOption}>Copy Link</Text>
             </MenuOption>
@@ -132,7 +136,6 @@ const MusicDashboard = () => {
       <View style={styles.header}>
         <Text style={styles.headerText}>MUSIC</Text>
         <View style={styles.iconContainer}>
-          <Feather name="search" size={30} style={styles.searchIcon} />
           {user.id !== undefined ? <View>
             <TouchableOpacity style={{
               width: 30,
@@ -151,8 +154,9 @@ const MusicDashboard = () => {
               borderRadius: 20,
               backgroundColor: '#333',
               justifyContent: 'center',
-              alignItems: 'center'
-            }} onPress={ToLogin}>
+              alignItems: 'center',
+              marginLeft: 10
+            }} onPress={() => NavigateTo('Login')}>
               <Text style={{
                 fontSize: 15,
                 fontWeight: '600',
@@ -193,23 +197,8 @@ const MusicDashboard = () => {
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
       />
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>You need to login to manage your library</Text>
-            <TouchableOpacity onPress={() => { navigation.navigate('Login'); setModalVisible(false); }} style={styles.modalButton}>
-              <Text style={styles.modalButtonText}>Login</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setModalVisible(false)} style={[styles.modalButton, { backgroundColor: '#007BFF' }]}>
-              <Text style={styles.modalButtonText}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+      <ModalLogin visible={modalVisible} setVisible={setModalVisible} />
+
     </View>
   );
 };
@@ -241,9 +230,4 @@ const styles = StyleSheet.create({
   menuOption: { flexDirection: 'row', gap: 13, alignItems: 'center' },
   labelMenuOption: { fontSize: 15, fontWeight: '600', color: '#333' },
   loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  modalContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' },
-  modalContent: { width: 300, padding: 20, backgroundColor: 'white', borderRadius: 10 },
-  modalTitle: { fontSize: 18, fontWeight: 'bold', textAlign: 'center' },
-  modalButton: { marginTop: 20, padding: 10, backgroundColor: '#ff0000', borderRadius: 10, alignItems: 'center' },
-  modalButtonText: { color: 'white', fontWeight: 'bold' }
 });

@@ -10,6 +10,6 @@ router.post("/CreatedPlaylist", CreatePlaylist);
 router.post("/DeletePlaylist", DeletePlaylist);
 router.post("/AddSongToPlaylist", AddSongToPlaylist);
 router.post("/RemoveSongFromPlaylist", RemoveSongFromPlaylist);
-router.post("/GetPlaylist", GetPlaylist);
+router.get("/GetPlaylist", GetPlaylist);
 
 module.exports = router;

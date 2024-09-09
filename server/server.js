@@ -8,7 +8,6 @@ require("dotenv").config();
 const authRoutes = require('./routes/authRoutes')
 const songRoutes = require('./routes/songRoutes')
 const likedSongRoutes = require('./routes/LikedSongRoutes')
-const commentRoutes = require('./routes/commentRoutes')
 const PlaylistRoutes = require('./routes/PlaylistRoutes')
 const FollowRoutes = require('./routes/FollowRoutes')
 
@@ -23,7 +22,6 @@ app.use(cors())
 app.use('/auth', authRoutes)
 app.use('/song', songRoutes);
 app.use('/LikedSong', likedSongRoutes)
-app.use('/comment', commentRoutes)
 app.use('/Playlist', PlaylistRoutes)
 app.use('/Follow', FollowRoutes)
 const server = http.createServer(app);

@@ -1,9 +1,9 @@
 const Playlist = require("../../models/Playlist");
 
 module.exports.GetPlaylist = async (req, res) => {
-  const { AuthorID } = req.body;
+  const UserID = req.query.UserID;
   try {
-    await Playlist.find({ AuthorID: AuthorID }).then((result) => {
+    await Playlist.find({ AuthorID: UserID }).then((result) => {
       res.status(200).send(result);
     });
   } catch (error) {
