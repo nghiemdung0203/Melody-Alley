@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { useNavigationContainerRef } from '@react-navigation/native';
 import AddToPlaylist from '../screens/AddToPlaylist';
 import PlaylistLibrary from '../screens/Library/PlaylistLibrary';
+import PlaylistPage from '../screens/PlaylistPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,7 @@ const AppNavigation = () => {
                 <Stack.Screen name='Register' component={Register} options={{ headerShown: false }} />
                 <Stack.Screen name='Onboarding' component={OnBoarding} options={{ headerShown: false }} />
                 <Stack.Screen name='AddToPlaylist' component={AddToPlaylist} options={{ headerShown: false }} />
+                <Stack.Screen name='PlaylistPage' component={PlaylistPage} options={{ headerShown: false }} />
             </Stack.Navigator>
             {/* Check if the current route is in the excluded routes array */}
             {!excludedRoutes.includes(currentRoute) && 

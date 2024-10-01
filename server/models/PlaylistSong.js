@@ -7,4 +7,7 @@ const PlaylistSongSchema = new mongoose.Schema({
   UpdatedAt: {type: Date}
 });
 
+// Add a compound index to ensure uniqueness of PlaylistID and SongID combination
+PlaylistSongSchema.index({ PlaylistID: 1, SongID: 1 }, { unique: true });
+
 module.exports = mongoose.model("PlaylistSong", PlaylistSongSchema);

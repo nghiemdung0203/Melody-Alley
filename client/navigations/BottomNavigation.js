@@ -42,25 +42,7 @@ const BottomNavigation = () => {
                     )
                 }
             }} />
-            <Tab.Screen name='Search' component={Search} options={{
-                tabBarIcon: ({ focused }) => {
-                    return (
-                        <View style={{
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: '#00bfff',
-                            height: Platform.OS === 'ios' ? 70 : 60,
-                            width: Platform.OS === 'ios' ? 70 : 60,
-                            top: Platform.OS === 'ios' ? -20 : -30,
-                            borderRadius: Platform.OS === 'ios' ? 35 : 30,
-                            borderWidth: 2,
-                            borderColor: '#fff'
-                        }}>
-                            <Ionicons name="search-outline" size={24} color='#fff' />
-                        </View>
-                    )
-                }
-            }} />
+           
             <Tab.Screen name='Upload' component={Upload} options={{
                 tabBarIcon: ({ focused }) => {
                     return (

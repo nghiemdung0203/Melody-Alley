@@ -13,7 +13,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import Font from '../config/Font';
+
 
 export default function Register() {
 
@@ -69,7 +69,6 @@ export default function Register() {
                         value={email} // Use the email state as the value
                         onChangeText={(text) => setEmail(text)} // Update the email state when the text changes
                         style={{
-                            fontFamily: Font['poppins-regular'],
                             fontSize: 14,
                             padding: 20,
                             backgroundColor: '#f1f4ff',
@@ -85,7 +84,6 @@ export default function Register() {
                         onChangeText={(text) => setPassword(text)} // Update the password state when the text changes
                         secureTextEntry
                         style={{
-                            fontFamily: Font['poppins-regular'],
                             fontSize: 14,
                             padding: 20,
                             backgroundColor: '#f1f4ff',
@@ -100,7 +98,6 @@ export default function Register() {
                         value={username} // Use the password state as the value
                         onChangeText={(text) => setusername(text)} // Update the password state when the text changes
                         style={{
-                            fontFamily: Font['poppins-regular'],
                             fontSize: 14,
                             padding: 20,
                             backgroundColor: '#f1f4ff',
@@ -113,7 +110,6 @@ export default function Register() {
                 <TouchableOpacity style={style.SignInbuton} onPress={Register_Process}>
                     <Text
                         style={{
-                            fontFamily: Font['poppins-bold'],
                             textAlign: 'center',
                             fontSize: 20,
                             color: '#fff',
@@ -127,7 +123,6 @@ export default function Register() {
                     }} onPress={toLogin}>
                     <Text
                         style={{
-                            fontFamily: Font['poppins-semiBold'],
                             textAlign: 'center',
                             fontSize: 20,
                             color: '#000',
@@ -141,7 +136,6 @@ export default function Register() {
                     }}>
                     <Text
                         style={{
-                            fontFamily: Font['poppins-semiBold'],
                             textAlign: 'center',
                             fontSize: 20,
                             color: '#000',
@@ -178,18 +172,15 @@ const style = StyleSheet.create({
     LoginText: {
         fontSize: 30,
         color: '#1F41BB',
-        fontFamily: Font['poppins-bold'],
         marginVertical: 30,
     },
 
     Welcome: {
-        fontFamily: Font['poppins-semiBold'],
         fontSize: 20,
         maxWidth: '60%',
         textAlign: 'center',
     },
     forgotPassword: {
-        fontFamily: Font['poppins-regular'],
         fontSize: 14,
         color: '#1F41BB',
         alignSelf: 'flex-end',

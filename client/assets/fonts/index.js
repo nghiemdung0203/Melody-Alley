@@ -1,0 +1,19 @@
+// Poppins Font Exports
+export const PoppinsBlack = require('./Poppins-Black.ttf');
+export const PoppinsBlackItalic = require('./Poppins-BlackItalic.ttf');
+export const PoppinsBold = require('./Poppins-Bold.ttf');
+export const PoppinsBoldItalic = require('./Poppins-BoldItalic.ttf');
+export const PoppinsExtraBold = require('./Poppins-ExtraBold.ttf');
+export const PoppinsExtraBoldItalic = require('./Poppins-ExtraBoldItalic.ttf');
+export const PoppinsExtraLight = require('./Poppins-ExtraLight.ttf');
+export const PoppinsExtraLightItalic = require('./Poppins-ExtraLightItalic.ttf');
+export const PoppinsItalic = require('./Poppins-Italic.ttf');
+export const PoppinsLight = require('./Poppins-Light.ttf');
+export const PoppinsLightItalic = require('./Poppins-LightItalic.ttf');
+export const PoppinsMedium = require('./Poppins-Medium.ttf');
+export const PoppinsMediumItalic = require('./Poppins-MediumItalic.ttf');
+export const PoppinsRegular = require('./Poppins-Regular.ttf');
+export const PoppinsSemiBold = require('./Poppins-SemiBold.ttf');
+export const PoppinsSemiBoldItalic = require('./Poppins-SemiBoldItalic.ttf');
+export const PoppinsThin = require('./Poppins-Thin.ttf');
+export const PoppinsThinItalic = require('./Poppins-ThinItalic.ttf');

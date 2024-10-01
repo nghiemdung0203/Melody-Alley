@@ -41,7 +41,7 @@ const MusicPlayer = ({ songs, selectedSongIndex }) => {
   const [trackArtist, setTrackArtist] = useState(songs[selectedSongIndex]?.artist || '');
   const [repeatMode, setRepeatMode] = useState('off');
 
-  const [speed, setSpeed] = useState(0);
+  const [listenCounted, setListenCounted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const scrollX = useRef(new Animated.Value(0)).current;

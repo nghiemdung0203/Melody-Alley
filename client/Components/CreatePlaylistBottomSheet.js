@@ -13,8 +13,9 @@ const CreatePlaylistBottomSheet = ({ onClose, user, song, onPlaylistCreated }) =
             AuthorID: user.id,
             Thumbnail: song.Thumbnail
         })
+        console.log(typeof(createdPlaylist.data._id))
         await axios.post('http://10.0.2.2:5002/Playlist/AddSongToPlaylist', {
-            PlaylistID: createdPlaylist._id,
+            PlaylistID: createdPlaylist.data._id,
             SongID: song._id
         }).then((response) => {
            if(response.status === 200) {
